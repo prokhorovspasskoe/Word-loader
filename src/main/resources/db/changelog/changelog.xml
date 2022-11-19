@@ -7,5 +7,11 @@
 
 
     <include file="tables/create-table-users.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-words.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-vocabularies.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-vocabulary-words.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-study-settings.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-study-plans.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-study-progress.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
