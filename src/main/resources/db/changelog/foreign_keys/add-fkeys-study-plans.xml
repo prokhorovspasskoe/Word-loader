@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_add_fkeys_study_plans" author="ugryumov.alexey" context="postgresql" labels="fkeys_study_plans">
+        <tagDatabase tag="before_add_fkeys_study_plans"/>
+    </changeSet>
+
+    <changeSet id="add_fkeys_study_plans" author="ugryumov.alexey" context="postgresql" labels="fkeys_study_plans">
+
+        <addForeignKeyConstraint baseTableName="STUDY_PLANS" baseColumnNames="VOCABULARY_ID" constraintName="FK_VOCABULARY_ID_STUDY_PLANS"
+                                 referencedTableName="VOCABULARIES" referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="STUDY_PLANS" baseColumnNames="USER_ID" constraintName="FK_USER_ID_STUDY_PLANS"
+                                 referencedTableName="USERS" referencedColumnNames="ID"/>
+
+    </changeSet>
+</databaseChangeLog>
