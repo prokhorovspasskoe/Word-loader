@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_insert_data_table.VOCABULARY_WORDS" author="ugryumov.alexey" context="postgresql" labels="insert_data_vocabulary_words_table">
+        <tagDatabase tag="before_insert_data_vocabulary_words_table"/>
+    </changeSet>
+
+    <changeSet id="insert_data_table.VOCABULARY_WORDS" author="ugryumov.alexey" context="postgresql" labels="insert_data_vocabulary_words_table">
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="1"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="2"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="3"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="4"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="5"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="1"></column>
+            <column name="WORD_ID" value="6"></column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
