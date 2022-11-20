@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_create_table.STUDY_PROGRESS" author="ugryumov.alexey" context="postgresql" labels="study_progress_table">
+        <tagDatabase tag="before_create_study_progress_table"/>
+    </changeSet>
+
+    <changeSet id="create_table.STUDY_PROGRESS" author="ugryumov.alexey" context="postgresql" labels="study_progress_table">
+        <createTable tableName="STUDY_PROGRESS">
+            <column name="ID" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="STUDY_PLAN_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WORD_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
