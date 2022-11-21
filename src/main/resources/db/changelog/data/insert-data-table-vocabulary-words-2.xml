@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_insert_data_table.VOCABULARY_WORDS-2" author="ugryumov.alexey" context="postgresql" labels="insert_data_vocabulary_words_table-2">
+        <tagDatabase tag="before_insert_data_vocabulary_words_table-2"/>
+    </changeSet>
+
+    <changeSet id="insert_data_table.VOCABULARY_WORDS-2" author="ugryumov.alexey" context="postgresql" labels="insert_data_vocabulary_words_table-2">
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="7"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="8"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="9"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="10"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="11"></column>
+        </insert>
+
+        <insert tableName="VOCABULARY_WORDS">
+            <column name="VOCABULARY_ID" value="2"></column>
+            <column name="WORD_ID" value="12"></column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

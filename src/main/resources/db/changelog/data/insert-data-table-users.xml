@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_insert_data_table.USERS" author="ugryumov.alexey" context="postgresql" labels="insert_data_users_table">
+        <tagDatabase tag="before_insert_data_users_table"/>
+    </changeSet>
+
+    <changeSet id="insert_data_table.USERS" author="ugryumov.alexey" context="postgresql" labels="insert_data_users_table">
+
+        <insert tableName="USERS">
+            <column name="NAME" value="admin"></column>
+            <column name="PASSWORD" value="admin"></column>
+        </insert>
+
+        <insert tableName="USERS">
+            <column name="NAME" value="user"></column>
+            <column name="PASSWORD" value="user"></column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
