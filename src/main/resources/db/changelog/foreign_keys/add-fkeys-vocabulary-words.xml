@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_add_fkeys_vocabulary_words" author="ugryumov.alexey" context="postgresql" labels="fkeys_vocabulary_words">
+        <tagDatabase tag="before_add_fkeys_vocabulary_words"/>
+    </changeSet>
+
+    <changeSet id="add_fkeys_vocabulary_words" author="ugryumov.alexey" context="postgresql" labels="fkeys_vocabulary_words">
+
+        <addForeignKeyConstraint baseTableName="VOCABULARY_WORDS" baseColumnNames="VOCABULARY_ID" constraintName="FK_VOCABULARY_ID_VOCABULARY_WORDS"
+                                 referencedTableName="VOCABULARIES" referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="VOCABULARY_WORDS" baseColumnNames="WORD_ID" constraintName="FK_WORD_ID_VOCABULARY_WORDS"
+                                 referencedTableName="WORDS" referencedColumnNames="ID"/>
+
+    </changeSet>
+</databaseChangeLog>
