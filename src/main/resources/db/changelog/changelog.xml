@@ -30,4 +30,7 @@
     <include file="data/insert-data-table-vocabulary-words-2.xml" relativeToChangelogFile="true"/>
     <include file="data/insert-data-table-study-settings.xml" relativeToChangelogFile="true"/>
 
+    <!-- Добавил поле в STUDY_SETTINGS -->
+    <include file="tables/add-column-study-settings.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
