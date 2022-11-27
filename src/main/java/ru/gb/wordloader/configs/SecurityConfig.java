@@ -12,10 +12,11 @@ import ru.gb.wordloader.services.jwt.JwtTokenProvider;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final JwtTokenProvider jwtTokenProvider;
+
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("").permitAll()
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfig(jwtTokenProvider));

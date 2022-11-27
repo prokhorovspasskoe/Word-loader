@@ -12,10 +12,10 @@ import ru.gb.wordloader.services.jwt.JwtUserFactory;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
-    public JwtUserDetailsService(UserService userService) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -29,6 +29,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         JwtUser jwtUser = JwtUserFactory.create(user);
 
-        return null;
+        return jwtUser;
     }
 }
