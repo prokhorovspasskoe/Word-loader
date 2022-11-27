@@ -33,4 +33,11 @@
     <!-- Добавил поле в STUDY_SETTINGS -->
     <include file="tables/add-column-study-settings.xml" relativeToChangelogFile="true"/>
 
+    <!-- Таблицы ROLES и USER_ROLES-->
+    <include file="tables/create-table-roles.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-user-roles.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/insert-data-table-roles.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>
