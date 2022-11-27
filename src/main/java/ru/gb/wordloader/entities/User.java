@@ -7,6 +7,7 @@ package ru.gb.wordloader.entities;
  * vocabularies - список словарей, созданных пользователем
  * studySettings - список настроек режимов изучения пользователя. Отдельная настройка для каждого словаря
  * studyPlans - список словарей, изучаемых пользователем. Один элемент - изучаемый словарь с текущим прогрессом
+ * roles - список ролей пользователя
  * */
 
 
@@ -44,4 +45,14 @@ public class User {
 
     @OneToMany
     private List<StudyPlan> studyPlans;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
+
+
 }
