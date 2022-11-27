@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_insert_data_table.WORDS" author="ugryumov.alexey" context="postgresql" labels="insert_data_words_table">
+        <tagDatabase tag="before_insert_data_words_table"/>
+    </changeSet>
+
+    <changeSet id="insert_data_table.WORDS" author="ugryumov.alexey" context="postgresql" labels="insert_data_words_table">
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="onion"></column>
+            <column name="TRANSLATED" value="лук"></column>
+        </insert>
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="tomato"></column>
+            <column name="TRANSLATED" value="помидор"></column>
+        </insert>
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="potato"></column>
+            <column name="TRANSLATED" value="картофель"></column>
+        </insert>
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="cucumber"></column>
+            <column name="TRANSLATED" value="огурец"></column>
+        </insert>
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="cabbage"></column>
+            <column name="TRANSLATED" value="капуста"></column>
+        </insert>
+
+        <insert tableName="WORDS">
+            <column name="ORIGINAL" value="carrot"></column>
+            <column name="TRANSLATED" value="морковь"></column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

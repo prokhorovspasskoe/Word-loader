@@ -20,4 +20,24 @@
     <include file="foreign_keys/add-fkeys-study-plans.xml" relativeToChangelogFile="true"/>
     <include file="foreign_keys/add-fkeys-study-progress.xml" relativeToChangelogFile="true"/>
 
+    <!-- ДАННЫЕ-->
+    <include file="data/insert-data-table-words.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-vocabularies.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-vocabulary-words.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-users.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-words-2.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-vocabularies-2.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-vocabulary-words-2.xml" relativeToChangelogFile="true"/>
+    <include file="data/insert-data-table-study-settings.xml" relativeToChangelogFile="true"/>
+
+    <!-- Добавил поле в STUDY_SETTINGS -->
+    <include file="tables/add-column-study-settings.xml" relativeToChangelogFile="true"/>
+
+    <!-- Таблицы ROLES и USER_ROLES-->
+    <include file="tables/create-table-roles.xml" relativeToChangelogFile="true"/>
+    <include file="tables/create-table-user-roles.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/insert-data-table-roles.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>
