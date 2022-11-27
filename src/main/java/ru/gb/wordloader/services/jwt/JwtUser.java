@@ -27,8 +27,9 @@ public class JwtUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        return authorities;
     }
+
     @Override
     public String getPassword() {
         return this.password;

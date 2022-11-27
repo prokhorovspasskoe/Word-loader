@@ -12,18 +12,11 @@ import ru.gb.wordloader.services.jwt.JwtTokenProvider;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-<<<<<<< HEAD
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-=======
 
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
->>>>>>> origin/dev_services
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
