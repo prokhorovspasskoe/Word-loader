@@ -10,11 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.gb.wordloader.entities.Role;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtTokenProvider {
@@ -24,8 +27,12 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
-    @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -38,8 +45,9 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String username){
+    public String createToken(String username, List<Role> roles){
         Claims claims = Jwts.claims().setSubject(username);
+        claims.put("roles", getRoleNames(roles));
 
         Date newDate = new Date();
         Date validityDate = new Date(newDate.getTime() + validityInMilliseconds);
@@ -49,6 +57,14 @@ public class JwtTokenProvider {
                 .setExpiration(validityDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    private List<String> getRoleNames(List<Role> userRoles){
+        List<String> result = new ArrayList<>();
+        userRoles.forEach(role -> {
+            result.add(role.getName());
+        });
+        return result;
     }
 
     public Authentication getAuthentication(String token){
