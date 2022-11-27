@@ -1,6 +1,9 @@
 package ru.gb.wordloader.services.jwt;
 
+<<<<<<< HEAD
+=======
 import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> origin/dev_services
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -19,11 +22,14 @@ public class JwtTokenFilter extends GenericFilterBean {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+<<<<<<< HEAD
+=======
     @Autowired
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+>>>>>>> origin/dev_services
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);

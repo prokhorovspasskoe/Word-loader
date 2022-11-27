@@ -27,6 +27,11 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
+<<<<<<< HEAD
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+=======
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -34,6 +39,7 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
+>>>>>>> origin/dev_services
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -59,6 +65,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+<<<<<<< HEAD
+=======
     private List<String> getRoleNames(List<Role> userRoles){
         List<String> result = new ArrayList<>();
         userRoles.forEach(role -> {
@@ -67,6 +75,7 @@ public class JwtTokenProvider {
         return result;
     }
 
+>>>>>>> origin/dev_services
     public Authentication getAuthentication(String token){
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
@@ -95,4 +104,17 @@ public class JwtTokenProvider {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
     }
+<<<<<<< HEAD
+
+    private List<String> getRoleNames(List<Role> userRoles){
+        List<String> result = new ArrayList<>();
+
+        userRoles.forEach(role -> {
+            result.add(role.getName());
+        });
+
+        return result;
+    }
+=======
+>>>>>>> origin/dev_services
 }
