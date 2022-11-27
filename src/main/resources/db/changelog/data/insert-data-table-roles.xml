@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_insert_data_table.ROLES" author="ugryumov.alexey" context="postgresql" labels="insert_data_roles_table">
+        <tagDatabase tag="before_insert_data_roles_table"/>
+    </changeSet>
+
+    <changeSet id="insert_data_table.ROLES" author="ugryumov.alexey" context="postgresql" labels="insert_data_roles_table">
+
+        <insert tableName="ROLES">
+            <column name="NAME" value="ROLE_ADMIN"></column>
+        </insert>
+
+        <insert tableName="ROLES">
+            <column name="NAME" value="ROLE_USER"></column>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
