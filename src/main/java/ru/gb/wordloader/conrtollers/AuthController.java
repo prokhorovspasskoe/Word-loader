@@ -37,7 +37,6 @@ public class AuthController {
             String username = requestUser.getName();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestUser.getPassword()));
             User user = userService.findByName(username);
-            System.out.println(user.getName());
             if(user == null) {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
             }
