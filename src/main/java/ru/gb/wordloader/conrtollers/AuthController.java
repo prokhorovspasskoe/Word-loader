@@ -7,9 +7,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.gb.wordloader.dto.UserDto;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.services.UserService;
 import ru.gb.wordloader.services.jwt.JwtTokenProvider;
@@ -32,9 +31,10 @@ public class AuthController {
         this.userService = userService;
     }
 
-    public ResponseEntity login(@RequestBody User requestUser) {
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody UserDto requestUser) {
         try {
-            String username = requestUser.getName();
+            String username = requestUser.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestUser.getPassword()));
             User user = userService.findByName(username);
             if(user == null) {
@@ -50,6 +50,5 @@ public class AuthController {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
-
     }
 }
