@@ -5,5 +5,7 @@ import ru.gb.wordloader.dto.WordDto;
 
 public interface PersonalAccountService {
     void createVocabulary(VocabularyDto vocabularyDto);
-    void createWord(WordDto wordDto);
+    VocabularyDto getVocabularyById(long id);
+    VocabularyDto updateVocabulary(VocabularyDto vocabularyDto);
+    void deleteVocabularyById(long id);
 }
