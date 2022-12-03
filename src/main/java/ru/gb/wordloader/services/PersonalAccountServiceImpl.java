@@ -49,8 +49,7 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
         VocabularyConverter vocabularyConverter = new VocabularyConverter();
         Vocabulary vocabulary = vocabularyConverter.convertFromDtoToEntity(vocabularyDto);
-        vocabularyRepository.save(vocabulary);
-        vocabulary = vocabularyRepository.getReferenceById(vocabulary.getId());
+        vocabulary = vocabularyRepository.save(vocabulary);
         return vocabularyConverter.convertFromEntityToDto(vocabulary);
     }
 
