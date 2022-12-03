@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.wordloader.dto.UserDto;
+import ru.gb.wordloader.dto.AuthenticationUserDto;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.services.UserService;
 import ru.gb.wordloader.services.jwt.JwtTokenProvider;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/v1/auth/")
+@RequestMapping(value = "/api/v1/auth/")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserDto requestUser) {
+    public ResponseEntity login(@RequestBody AuthenticationUserDto requestUser) {
         try {
             String username = requestUser.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestUser.getPassword()));

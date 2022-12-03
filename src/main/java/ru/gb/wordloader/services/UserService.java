@@ -1,12 +1,12 @@
 package ru.gb.wordloader.services;
 
-import ru.gb.wordloader.dto.UserDto;
+import ru.gb.wordloader.dto.RegistrationUserDto;
 import ru.gb.wordloader.entities.User;
 
 import java.util.Optional;
 
 public interface UserService {
-    void register(UserDto userDto);
+    boolean register(RegistrationUserDto registrationUserDto);
 
     User findByName(String Username);
 
