@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.gb.wordloader.dto.UserDto;
+import ru.gb.wordloader.dto.RegistrationUserDto;
 import ru.gb.wordloader.entities.User;
-import ru.gb.wordloader.repositories.UserRepository;
 import ru.gb.wordloader.services.UserService;
 
 @RestController
-@RequestMapping(value = "/v1/registration")
+@RequestMapping(value = "/api/v1/registration")
 public class RegistrationController {
 
     private final UserService userService;
@@ -26,13 +25,16 @@ public class RegistrationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto registerDto) {
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDto registerDto) {
         String username = registerDto.getUsername();
         User user = userService.findByName(username);
         if (user != null) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
-        userService.register(registerDto);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        if ( userService.register(registerDto) ) {
+            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Password and it's confirmation mismatch", HttpStatus.BAD_REQUEST);
+        }
     }
 }

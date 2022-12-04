@@ -3,7 +3,7 @@ package ru.gb.wordloader.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.gb.wordloader.dto.UserDto;
+import ru.gb.wordloader.dto.RegistrationUserDto;
 import ru.gb.wordloader.entities.Role;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.repositories.RoleRepository;
@@ -35,20 +35,45 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void register(UserDto userDto) {
+    public boolean register(RegistrationUserDto registrationUserDto) {
 
-        if(userDto.getPassword().equals(userDto.getMatchingPassword()))
+        if(registrationUserDto.getPassword().equals(registrationUserDto.getMatchingPassword()))
         {
-            if(userRepository.findFirstByName(userDto.getUsername()).getName() == null){
+            // Мы в контроллере уже проверили, что такого логина нет, зачем ещё раз?
+
+            // И потом, если USER по username не будет найден, то вызов getName() вызовет
+            // Null Pointer Exception.
+            //
+            // Аннотацию @Builder я для чего ставлю? Сергей, почитай про шаблон проектирования Builder.
+            // У всех же был курс "Архитектуры и шаблоны проектирования на Java"?
+
+            /*
+            if(userRepository.findFirstByName(registrationUserDto.getUsername()).getName() == null){
                 Role roleUser = roleRepository.findByName("ROLE_USER");
                 List<Role> userRoles = new ArrayList<>();
                 userRoles.add(roleUser);
                 User user = new User();
-                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+                user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
                 user.setRoles(userRoles);
-                user.setName(userDto.getUsername());
+                user.setName(registrationUserDto.getUsername());
                 userRepository.save(user);
+            }*/
+
+            List<Role> userRoles = new ArrayList<>();
+            Role userRole = roleRepository.findByName("ROLE_USER");
+            if (userRole != null) {
+                userRoles.add(userRole);
             }
+
+            User user = User.builder()
+                    .name(registrationUserDto.getUsername())
+                    .password(passwordEncoder.encode(registrationUserDto.getPassword()))
+                    .roles(userRoles)
+                    .build();
+            userRepository.save(user);
+            return true;
+        } else {
+            return false; //Мы должны пользователю сообщить, что пароль и подтверждение не совпадают
         }
     }
 
