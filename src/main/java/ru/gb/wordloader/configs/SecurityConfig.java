@@ -5,18 +5,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import ru.gb.wordloader.services.jwt.JwtConfig;
-import ru.gb.wordloader.services.jwt.JwtTokenProvider;
+import ru.gb.wordloader.security.jwt.JwtConfigurer;
+import ru.gb.wordloader.security.jwt.JwtTokenProvider;
 
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     private JwtTokenProvider jwtTokenProvider;
 
+    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+    private static final String SIGNUP_ENDPOINT = "/api/v1/registration/signup";
+    private static final String FULL_ACCESS = "/api/v1/**"; //На время решения проблемы с токеном отключаем авторизацию для дальнейшей разработки
+
     @Autowired
-    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
+    public void SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -34,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/v1/auth/**", "/v1/registration/**").permitAll()
+                .antMatchers(LOGIN_ENDPOINT, SIGNUP_ENDPOINT, FULL_ACCESS).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtConfig(jwtTokenProvider));
+                .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }

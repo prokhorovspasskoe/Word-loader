@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.dto.AuthenticationUserDto;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.services.UserService;
-import ru.gb.wordloader.services.jwt.JwtTokenProvider;
+import ru.gb.wordloader.security.jwt.JwtTokenProvider;
 
 import java.util.HashMap;
 import java.util.Map;

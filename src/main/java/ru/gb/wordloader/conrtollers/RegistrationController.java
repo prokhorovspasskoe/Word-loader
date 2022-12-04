@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.gb.wordloader.dto.RegistrationUserDto;
-import ru.gb.wordloader.dto.UserDto;
 import ru.gb.wordloader.entities.User;
-import ru.gb.wordloader.repositories.UserRepository;
 import ru.gb.wordloader.services.UserService;
 
 @RestController
