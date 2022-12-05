@@ -15,6 +15,7 @@ import ru.gb.wordloader.entities.Role;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secret)//
                 .compact();
     }
-
+    @Transactional
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

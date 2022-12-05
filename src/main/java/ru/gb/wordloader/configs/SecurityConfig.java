@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
     private static final String SIGNUP_ENDPOINT = "/api/v1/registration/signup";
-    private static final String FULL_ACCESS = "/api/v1/**"; //На время решения проблемы с токеном отключаем авторизацию для дальнейшей разработки
+    private static final String FULL_ACCESS = "/api/v1/**";
 
     @Autowired
     public void SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT, SIGNUP_ENDPOINT, FULL_ACCESS).permitAll()
+                .antMatchers(SIGNUP_ENDPOINT, LOGIN_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
