@@ -1,5 +1,6 @@
 package ru.gb.wordloader.services;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.UserConverter;
@@ -12,7 +13,9 @@ import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.entities.Word;
 import ru.gb.wordloader.repositories.VocabularyRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class PersonalAccountServiceImpl implements PersonalAccountService{
@@ -52,7 +55,6 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         vocabulary = vocabularyRepository.save(vocabulary);
         return vocabularyConverter.convertFromEntityToDto(vocabulary);
     }
-
     @Override
     public void deleteVocabularyById(long id) {
         vocabularyRepository.deleteById(id);

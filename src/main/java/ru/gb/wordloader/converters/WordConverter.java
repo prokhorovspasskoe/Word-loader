@@ -9,13 +9,11 @@ import java.util.List;
 public class WordConverter {
     public List<Word> convertFromDtoToEntity(List<WordDto> wordsDto){
         List<Word> words = new ArrayList<>();
-        Word bufferWord = new Word();
-        WordDto bufferWordDto = new WordDto();
 
         for (int i = 0; i < wordsDto.size(); i++) {
-            bufferWordDto = wordsDto.get(i);
-            bufferWord.setOriginal(bufferWordDto.getOriginal());
-            bufferWord.setTranslated(bufferWordDto.getTranslated());
+            Word bufferWord = new Word();
+            bufferWord.setOriginal(wordsDto.get(i).getOriginal());
+            bufferWord.setTranslated(wordsDto.get(i).getTranslated());
             words.add(bufferWord);
         }
         return words;
@@ -23,13 +21,11 @@ public class WordConverter {
 
     public List<WordDto> convertFromEntityToDto(List<Word> words){
         List<WordDto> wordDtoList = new ArrayList<>();
-        Word bufferWord = new Word();
-        WordDto bufferWordDto = new WordDto();
 
         for (int i = 0; i < words.size(); i++) {
-            bufferWord = words.get(i);
-            bufferWordDto.setOriginal(bufferWord.getOriginal());
-            bufferWordDto.setTranslated(bufferWord.getTranslated());
+            WordDto bufferWordDto = new WordDto();
+            bufferWordDto.setOriginal(words.get(i).getOriginal());
+            bufferWordDto.setTranslated(words.get(i).getTranslated());
             wordDtoList.add(bufferWordDto);
         }
 
