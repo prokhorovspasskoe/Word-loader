@@ -31,4 +31,20 @@ public class WordConverter {
 
         return wordDtoList;
     }
+
+    public WordDto convertEntityToDTO(Word word) {
+        return WordDto.builder()
+                .id(word.getId())
+                .original(word.getOriginal())
+                .translated(word.getTranslated())
+                .build();
+    }
+
+    public Word convertDtoToEntity(WordDto wordDto) {
+        return Word.builder()
+                .id(wordDto.getId())
+                .original(wordDto.getOriginal())
+                .translated(wordDto.getTranslated())
+                .build();
+    }
 }

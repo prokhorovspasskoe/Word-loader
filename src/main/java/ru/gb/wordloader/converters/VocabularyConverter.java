@@ -19,12 +19,10 @@ public class VocabularyConverter {
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabulary.isPrivate());
         UserConverter userConverter = new UserConverter();
-        User user = new User();
-        user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
+        User user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
         vocabulary.setUser(user);
-        List<Word> wordsList = new ArrayList<>();
         WordConverter wordConverter = new WordConverter();
-        wordsList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
+        List<Word> wordsList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
         vocabulary.setWords(wordsList);
         return vocabulary;
     }
