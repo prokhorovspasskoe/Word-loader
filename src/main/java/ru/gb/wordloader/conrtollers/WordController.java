@@ -24,6 +24,21 @@ public class WordController {
         WordDto wordDto = personalAccountService.findWordById(id);
         return new ResponseEntity<>(wordDto, HttpStatus.OK);
     }
+    @PostMapping("/add")
+    public void addWord(@RequestBody WordDto wordDto){
+        personalAccountService.addWord(wordDto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteWordById(@PathVariable long id){
+        personalAccountService.deleteWordById(id);
+    }
+
+    @PutMapping("/put/{id}")
+    public void putWordById(@PathVariable long id, @RequestBody WordDto wordDto){
+        wordDto.setId(id);
+        personalAccountService.updateWord(wordDto);
+    }
 
     @ExceptionHandler
     public ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
