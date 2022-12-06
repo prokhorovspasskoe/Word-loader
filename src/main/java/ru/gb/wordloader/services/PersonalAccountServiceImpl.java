@@ -32,9 +32,8 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
-        User user = new User();
         UserConverter userConverter = new UserConverter();
-        user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
+        User user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
         vocabulary.setUser(user);
         WordConverter wordConverter = new WordConverter();
         List<Word> wordList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
