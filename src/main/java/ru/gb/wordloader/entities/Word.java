@@ -33,17 +33,12 @@ public class Word {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name")
+    @Column(name="original")
     private String original;
 
-    @Column(name="password")
+    @Column(name="translated")
     private String translated;
 
-    @ManyToMany
-    @JoinTable(
-            name = "vocabulary_words",
-            joinColumns = @JoinColumn(name = "word_id"),
-            inverseJoinColumns = @JoinColumn(name = "vocabulary_id")
-    )
+    @ManyToMany(mappedBy = "words", fetch = FetchType.LAZY)
     private List<Vocabulary> vocabularies;
 }

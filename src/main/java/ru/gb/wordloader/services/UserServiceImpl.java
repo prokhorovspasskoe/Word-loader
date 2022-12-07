@@ -3,7 +3,7 @@ package ru.gb.wordloader.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.gb.wordloader.dto.UserDto;
+import ru.gb.wordloader.dto.RegistrationUserDto;
 import ru.gb.wordloader.entities.Role;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.repositories.RoleRepository;
@@ -15,40 +15,39 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void register(UserDto userDto) {
+    public boolean register(RegistrationUserDto registrationUserDto) {
 
-        if(userDto.getPassword().equals(userDto.getMatchingPassword()))
+        if(registrationUserDto.getPassword().equals(registrationUserDto.getMatchingPassword()))
         {
-            if(userRepository.findFirstByName(userDto.getUsername()).getName() == null){
-                Role roleUser = roleRepository.findByName("ROLE_USER");
-                List<Role> userRoles = new ArrayList<>();
-                userRoles.add(roleUser);
-                User user = new User();
-                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-                user.setRoles(userRoles);
-                user.setName(userDto.getUsername());
-                userRepository.save(user);
+            List<Role> userRoles = new ArrayList<>();
+            Role userRole = roleRepository.findByName("ROLE_USER");
+            if (userRole != null) {
+                userRoles.add(userRole);
+            }else{
+                return false;
             }
+
+            User user = User.builder()
+                    .name(registrationUserDto.getUsername())
+                    .password(passwordEncoder.encode(registrationUserDto.getPassword()))
+                    .roles(userRoles)
+                    .build();
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
         }
     }
 
