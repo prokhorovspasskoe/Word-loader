@@ -11,16 +11,20 @@ import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.entities.Word;
 import ru.gb.wordloader.repositories.VocabularyRepository;
+import ru.gb.wordloader.repositories.WordRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonalAccountServiceImpl implements PersonalAccountService{
-    private VocabularyRepository vocabularyRepository;
+    private final VocabularyRepository vocabularyRepository;
+    private final WordRepository wordRepository;
 
     @Autowired
-    public void setVocabularyRepository(VocabularyRepository vocabularyRepository) {
+    public PersonalAccountServiceImpl(VocabularyRepository vocabularyRepository, WordRepository wordRepository) {
         this.vocabularyRepository = vocabularyRepository;
+        this.wordRepository = wordRepository;
     }
 
     @Override
@@ -28,10 +32,6 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
-        User user = new User();
-        UserConverter userConverter = new UserConverter();
-        user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
-        vocabulary.setUser(user);
         WordConverter wordConverter = new WordConverter();
         List<Word> wordList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
         vocabulary.setWords(wordList);
@@ -41,20 +41,42 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     @Override
     public VocabularyDto getVocabularyById(long id) {
         Vocabulary vocabulary = vocabularyRepository.getReferenceById(id);
-        VocabularyConverter vocabularyConverter = new VocabularyConverter();
-        return vocabularyConverter.convertFromEntityToDto(vocabulary);
+        return VocabularyConverter.convertToDto(vocabulary);
     }
 
     @Override
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
-        VocabularyConverter vocabularyConverter = new VocabularyConverter();
-        Vocabulary vocabulary = vocabularyConverter.convertFromDtoToEntity(vocabularyDto);
+        Vocabulary vocabulary = VocabularyConverter.convertFromDto(vocabularyDto);
         vocabulary = vocabularyRepository.save(vocabulary);
-        return vocabularyConverter.convertFromEntityToDto(vocabulary);
+        return VocabularyConverter.convertToDto(vocabulary);
     }
-
     @Override
     public void deleteVocabularyById(long id) {
         vocabularyRepository.deleteById(id);
+    }
+
+    @Override
+    public void addWord(WordDto wordDto) {
+        WordConverter wordConverter = new WordConverter();
+        Word word = wordConverter.convertDtoToEntity(wordDto);
+        wordRepository.save(word);
+    }
+    @Override
+    public WordDto findWordById(Long id) {
+        Optional<Word> word = wordRepository.findById(id);
+        WordConverter wordConverter = new WordConverter();
+        return wordConverter.convertEntityToDTO(word.get());
+    }
+
+    @Override
+    public void updateWord(WordDto wordDto) {
+        WordConverter wordConverter = new WordConverter();
+        Word word = wordConverter.convertDtoToEntity(wordDto);
+        wordRepository.save(word);
+    }
+
+    @Override
+    public void deleteWordById(long id) {
+        wordRepository.deleteById(id);
     }
 }

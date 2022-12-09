@@ -1,6 +1,7 @@
 package ru.gb.wordloader.services;
 
 import ru.gb.wordloader.dto.RegistrationUserDto;
+import ru.gb.wordloader.dto.UserDto;
 import ru.gb.wordloader.entities.User;
 
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface UserService {
     Optional<User> findById(Long id);
 
     void deleteUser(long id);
+
+    UserDto getUserAllInfo(long user_id);
 }
