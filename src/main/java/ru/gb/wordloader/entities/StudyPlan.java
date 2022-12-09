@@ -48,4 +48,10 @@ public class StudyPlan {
     @OneToMany
     private List<StudyProgress> studyProgress;
 
+    //Реализовать метод, который вычисляет количество выученных слов в словаре "на лету"
+    //согласно текущей настройки StudySettings.correctAttemptsRequired
+    public Long getWordsFinished() {
+        return Long.valueOf(0);
+    }
+
 }

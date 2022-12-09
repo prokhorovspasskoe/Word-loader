@@ -1,21 +1,25 @@
 package ru.gb.wordloader.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VocabularyDto {
+public class StudyPlanDto {
 
     private Long id;
-    private String theme;
-    private boolean isPrivate;
-    private List<WordDto> words;
+
+    private VocabularyDto vocabulary;
+
+    private LocalDateTime lastProgress;
+
+    private Long wordsFinished;
 
 }
