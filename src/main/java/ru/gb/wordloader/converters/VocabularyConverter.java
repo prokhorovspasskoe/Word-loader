@@ -20,7 +20,7 @@ public class VocabularyConverter {
                 .id(vocabulary.getId())
                 .theme(vocabulary.getTheme())
                 .isPrivate(vocabulary.isPrivate())
-                .words( WordConverter.convertToDtoList(vocabulary.getWords()))
+                .words( WordConverter.convertFromEntityToDto(vocabulary.getWords()))
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class VocabularyConverter {
                 .id(vocabularyDto.getId())
                 .theme(vocabularyDto.getTheme())
                 .isPrivate(vocabularyDto.isPrivate())
-                .words( WordConverter.convertFromDtoList(vocabularyDto.getWords()))
+                .words( WordConverter.convertFromDtoToEntity(vocabularyDto.getWords()))
                 .build();
     }
 

@@ -32,9 +32,6 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
-        UserConverter userConverter = new UserConverter();
-        User user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
-        vocabulary.setUser(user);
         WordConverter wordConverter = new WordConverter();
         List<Word> wordList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
         vocabulary.setWords(wordList);
@@ -44,16 +41,14 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     @Override
     public VocabularyDto getVocabularyById(long id) {
         Vocabulary vocabulary = vocabularyRepository.getReferenceById(id);
-        VocabularyConverter vocabularyConverter = new VocabularyConverter();
-        return vocabularyConverter.convertFromEntityToDto(vocabulary);
+        return VocabularyConverter.convertToDto(vocabulary);
     }
 
     @Override
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
-        VocabularyConverter vocabularyConverter = new VocabularyConverter();
-        Vocabulary vocabulary = vocabularyConverter.convertFromDtoToEntity(vocabularyDto);
+        Vocabulary vocabulary = VocabularyConverter.convertFromDto(vocabularyDto);
         vocabulary = vocabularyRepository.save(vocabulary);
-        return vocabularyConverter.convertFromEntityToDto(vocabulary);
+        return VocabularyConverter.convertToDto(vocabulary);
     }
     @Override
     public void deleteVocabularyById(long id) {

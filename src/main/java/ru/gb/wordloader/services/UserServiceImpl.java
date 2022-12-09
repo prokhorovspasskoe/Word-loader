@@ -3,7 +3,9 @@ package ru.gb.wordloader.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.gb.wordloader.converters.UserConverter;
 import ru.gb.wordloader.dto.RegistrationUserDto;
+import ru.gb.wordloader.dto.UserDto;
 import ru.gb.wordloader.entities.Role;
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.repositories.RoleRepository;
@@ -64,5 +66,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUser(long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDto getUserAllInfo(long user_id) {
+        User user = userRepository.getReferenceById(user_id);
+        return UserConverter.convertToDto(user);
     }
 }

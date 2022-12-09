@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordConverter {
-    public List<Word> convertFromDtoToEntity(List<WordDto> wordsDto){
+    public static List<Word> convertFromDtoToEntity(List<WordDto> wordsDto){
         List<Word> words = new ArrayList<>();
 
         for (int i = 0; i < wordsDto.size(); i++) {
@@ -19,7 +19,7 @@ public class WordConverter {
         return words;
     }
 
-    public List<WordDto> convertFromEntityToDto(List<Word> words){
+    public static List<WordDto> convertFromEntityToDto(List<Word> words){
         List<WordDto> wordDtoList = new ArrayList<>();
 
         for (int i = 0; i < words.size(); i++) {
