@@ -16,4 +16,6 @@ public interface UserService {
     void deleteUser(long id);
 
     UserDto getUserAllInfo(long user_id);
+
+    UserDto getUserAllInfo(String username);
 }

@@ -73,4 +73,11 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.getReferenceById(user_id);
         return UserConverter.convertToDto(user);
     }
+
+    @Override
+    public UserDto getUserAllInfo(String username) {
+        User user = userRepository.findFirstByName(username);
+        return UserConverter.convertToDto(user);
+    }
+
 }

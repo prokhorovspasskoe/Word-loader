@@ -2,12 +2,10 @@ package ru.gb.wordloader.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gb.wordloader.converters.UserConverter;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
 import ru.gb.wordloader.dto.WordDto;
-import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.entities.Word;
 import ru.gb.wordloader.repositories.VocabularyRepository;
@@ -33,7 +31,7 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
         WordConverter wordConverter = new WordConverter();
-        List<Word> wordList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
+        List<Word> wordList = WordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
         vocabulary.setWords(wordList);
         vocabularyRepository.save(vocabulary);
     }
