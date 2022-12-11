@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,10 +17,11 @@ public class StudyPlanDto {
 
     private Long id;
 
-    private VocabularyDto vocabulary;
+    private Long user_id;
+
+    private Long vocabulary_id;
 
     private LocalDateTime lastProgress;
 
-    private Long wordsFinished;
-
+    private List<StudyWordDto> studyWords;
 }

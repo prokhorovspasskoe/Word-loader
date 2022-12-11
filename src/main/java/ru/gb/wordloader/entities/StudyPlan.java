@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -46,12 +47,6 @@ public class StudyPlan {
     private LocalDateTime lastProgress;
 
     @OneToMany
+    @JoinColumn(name="study_plan_id")
     private List<StudyProgress> studyProgress;
-
-    //Реализовать метод, который вычисляет количество выученных слов в словаре "на лету"
-    //согласно текущей настройки StudySettings.correctAttemptsRequired
-    public Long getWordsFinished() {
-        return Long.valueOf(0);
-    }
-
 }
