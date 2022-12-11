@@ -12,11 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ru.gb.wordloader.conrtollers.RegistrationController;
 import ru.gb.wordloader.dto.RegistrationUserDto;
-<<<<<<< HEAD
 import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.services.UserService;
-=======
->>>>>>> dev_testing
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -29,7 +26,6 @@ public class RegistrationControllerTest {
 
     MockMvc mockMvc;
     RegistrationController registrationController;
-<<<<<<< HEAD
     UserService userService;
 
     @Autowired
@@ -39,7 +35,6 @@ public class RegistrationControllerTest {
         this.userService = userService;
     }
 
-=======
 
     @Autowired
     public RegistrationControllerTest(MockMvc mockMvc, RegistrationController registrationController) {
@@ -49,7 +44,6 @@ public class RegistrationControllerTest {
 
 
 
->>>>>>> dev_testing
     public static MockHttpServletRequestBuilder postToJson(String url, Object body) {
         try {
             String json = new ObjectMapper().writeValueAsString(body);
@@ -74,7 +68,6 @@ public class RegistrationControllerTest {
     @Order(2)
     //TODO удаление после тестов
     void registrationNewUser() throws Exception {
-<<<<<<< HEAD
         User user = userService.findByName("test");
         if (user != null) {
             userService.deleteUser(user.getId());
@@ -83,12 +76,10 @@ public class RegistrationControllerTest {
                 .username("test")
                 .password("test")
                 .matchingPassword("test")
-=======
         RegistrationUserDto userDto = new RegistrationUserDto().builder()
                 .username("test7")
                 .password("test7")
                 .matchingPassword("test7")
->>>>>>> dev_testing
                 .build();
         mockMvc.perform(postToJson("/api/v1/registration/signup", userDto)).andExpect(status().is2xxSuccessful());
     }
