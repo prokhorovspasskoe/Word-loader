@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
 public class VocabularyConverter {
 
     public static VocabularyDto convertToDto(Vocabulary vocabulary) {
@@ -20,7 +19,7 @@ public class VocabularyConverter {
                 .id(vocabulary.getId())
                 .theme(vocabulary.getTheme())
                 .isPrivate(vocabulary.isPrivate())
-                .words( WordConverter.convertFromEntityToDto(vocabulary.getWords()))
+                .words( WordConverter.convertToDtoList(vocabulary.getWords()))
                 .build();
     }
 
@@ -29,7 +28,7 @@ public class VocabularyConverter {
                 .id(vocabularyDto.getId())
                 .theme(vocabularyDto.getTheme())
                 .isPrivate(vocabularyDto.isPrivate())
-                .words( WordConverter.convertFromDtoToEntity(vocabularyDto.getWords()))
+                .words( WordConverter.convertFromDtoList(vocabularyDto.getWords()))
                 .build();
     }
 
@@ -40,32 +39,4 @@ public class VocabularyConverter {
     public static List<Vocabulary> convertFromDtoList(List<VocabularyDto> vocabularyDtos) {
         return vocabularyDtos.stream().map(p -> convertFromDto(p)).collect(Collectors.toList());
     }
-
-    /*
-    public Vocabulary convertFromDtoToEntity(VocabularyDto vocabularyDto){
-        Vocabulary vocabulary = new Vocabulary();
-        vocabulary.setTheme(vocabularyDto.getTheme());
-        vocabulary.setPrivate(vocabulary.isPrivate());
-        UserConverter userConverter = new UserConverter();
-        User user = userConverter.convertFromDtoToEntity(vocabularyDto.getUser());
-        vocabulary.setUser(user);
-        WordConverter wordConverter = new WordConverter();
-        List<Word> wordsList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
-        vocabulary.setWords(wordsList);
-        return vocabulary;
-    }
-
-    public VocabularyDto convertFromEntityToDto(Vocabulary vocabulary){
-        VocabularyDto vocabularyDto = new VocabularyDto();
-        vocabularyDto.setTheme(vocabulary.getTheme());
-        vocabularyDto.setPrivate(vocabulary.isPrivate());
-        UserConverter userConverter = new UserConverter();
-        UserDto userDto = userConverter.convertFromEntityToDto(vocabulary.getUser());
-        vocabularyDto.setUser(userDto);
-        WordConverter wordConverter = new WordConverter();
-        List<WordDto> wordDtoList = wordConverter.convertFromEntityToDto(vocabulary.getWords());
-        vocabularyDto.setWords(wordDtoList);
-        return vocabularyDto;
-    }
-    */
 }
