@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ru.gb.wordloader.conrtollers.RegistrationController;
 import ru.gb.wordloader.dto.RegistrationUserDto;
+import ru.gb.wordloader.entities.User;
+import ru.gb.wordloader.services.UserService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -24,14 +26,14 @@ public class RegistrationControllerTest {
 
     MockMvc mockMvc;
     RegistrationController registrationController;
+    UserService userService;
 
     @Autowired
-    public RegistrationControllerTest(MockMvc mockMvc, RegistrationController registrationController) {
+    public RegistrationControllerTest(MockMvc mockMvc, RegistrationController registrationController, UserService userService) {
         this.mockMvc = mockMvc;
         this.registrationController = registrationController;
+        this.userService = userService;
     }
-
-
 
     public static MockHttpServletRequestBuilder postToJson(String url, Object body) {
         try {
@@ -57,10 +59,14 @@ public class RegistrationControllerTest {
     @Order(2)
     //TODO удаление после тестов
     void registrationNewUser() throws Exception {
+        User user = userService.findByName("test");
+        if (user != null) {
+            userService.deleteUser(user.getId());
+        }
         RegistrationUserDto userDto = new RegistrationUserDto().builder()
-                .username("test7")
-                .password("test7")
-                .matchingPassword("test7")
+                .username("test")
+                .password("test")
+                .matchingPassword("test")
                 .build();
         mockMvc.perform(postToJson("/api/v1/registration/signup", userDto)).andExpect(status().is2xxSuccessful());
     }
