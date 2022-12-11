@@ -22,6 +22,7 @@ public class StudyModServiceImpl implements StudyModService{
 
     @Override
     public List<WordDto> initialize(long vocabularyId, int wordsInTest) {
+        /*
         Vocabulary vocabulary = vocabularyRepository.getReferenceById(vocabularyId);
         List<Word> testWordsList = new ArrayList<>();
 
@@ -32,5 +33,7 @@ public class StudyModServiceImpl implements StudyModService{
         WordConverter wordConverter = new WordConverter();
 
         return  wordConverter.convertFromEntityToDto(testWordsList);
+        */
+        return null; //Пока закомментил, изменилась реализация конвертера /Угрюмов Алексей
     }
 }

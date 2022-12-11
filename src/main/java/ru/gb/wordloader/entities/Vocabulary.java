@@ -38,9 +38,8 @@ public class Vocabulary {
     @Column(name = "is_private")
     private boolean isPrivate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-     private User user;
+    @ManyToMany(mappedBy = "vocabularies", fetch = FetchType.LAZY)
+    private List<User> users;
 
     @ManyToMany
     @JoinTable(
