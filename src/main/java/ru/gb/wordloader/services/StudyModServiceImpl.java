@@ -5,15 +5,18 @@ import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.entities.Vocabulary;
-import ru.gb.wordloader.entities.Word;
 import ru.gb.wordloader.repositories.VocabularyRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
     private final VocabularyRepository vocabularyRepository;
+    private List<WordDto> wordDtoList;
+    private int minBreakPeriod;
+    private int correctAttemptsRequired;
+    private int wordsInTest;
+    private int sizeVocabulary;
 
     @Autowired
     public StudyModServiceImpl(VocabularyRepository vocabularyRepository) {
@@ -21,19 +24,37 @@ public class StudyModServiceImpl implements StudyModService{
     }
 
     @Override
-    public List<WordDto> initialize(long vocabularyId, int wordsInTest) {
-        /*
-        Vocabulary vocabulary = vocabularyRepository.getReferenceById(vocabularyId);
-        List<Word> testWordsList = new ArrayList<>();
+    public List<WordDto> initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest) {
+        this.correctAttemptsRequired = correctAttemptsRequired;
+        this.wordsInTest = wordsInTest;
+        this.minBreakPeriod = minBreakPeriod;
+
+        Set<Integer> integers = new HashSet<>();
+
+        Vocabulary vocabulary = vocabularyRepository.getByTheme(theme);
+        sizeVocabulary = vocabulary.getWords().size();
+        wordDtoList = new ArrayList<>();
 
         for (int i = 0; i < wordsInTest; i++) {
-            testWordsList.add(vocabulary.getWords().get(i));
+            int index = generateIndex();
+
+            if(integers.add(index)) {
+                WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
+                wordDtoList.add(wordDto);
+            }else {
+                i--;
+                continue;
+            }
+
+            WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
+            wordDtoList.add(wordDto);
         }
 
-        WordConverter wordConverter = new WordConverter();
-
-        return  wordConverter.convertFromEntityToDto(testWordsList);
-        */
-        return null; //Пока закомментил, изменилась реализация конвертера /Угрюмов Алексей
+        return wordDtoList;
     }
+
+    private int generateIndex(){
+        return (int) (Math.random() * sizeVocabulary);
+    }
+
 }
