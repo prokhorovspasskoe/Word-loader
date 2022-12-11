@@ -37,14 +37,21 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "user_vocabularies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "vocabulary_id")
+    )
     private List<Vocabulary> vocabularies;
 
+/*
     @OneToMany
     private List<StudySetting> studySettings;
 
     @OneToMany
     private List<StudyPlan> studyPlans;
+*/
 
     @ManyToMany
     @JoinTable(

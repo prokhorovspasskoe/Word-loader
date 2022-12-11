@@ -32,8 +32,8 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
-        WordConverter wordConverter = new WordConverter();
-        List<Word> wordList = wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
+        //WordConverter wordConverter = new WordConverter();
+        List<Word> wordList = WordConverter.convertFromDtoList(vocabularyDto.getWords()); //wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
         vocabulary.setWords(wordList);
         vocabularyRepository.save(vocabulary);
     }
@@ -57,21 +57,28 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
 
     @Override
     public void addWord(WordDto wordDto) {
+        /*
         WordConverter wordConverter = new WordConverter();
         Word word = wordConverter.convertDtoToEntity(wordDto);
+        */
+        Word word = WordConverter.convertFromDto(wordDto);
+
         wordRepository.save(word);
     }
     @Override
     public WordDto findWordById(Long id) {
         Optional<Word> word = wordRepository.findById(id);
+        /*
         WordConverter wordConverter = new WordConverter();
         return wordConverter.convertEntityToDTO(word.get());
+        */
+        return WordConverter.convertToDTO(word.get());
     }
 
     @Override
     public void updateWord(WordDto wordDto) {
-        WordConverter wordConverter = new WordConverter();
-        Word word = wordConverter.convertDtoToEntity(wordDto);
+        //WordConverter wordConverter = new WordConverter();
+        Word word = WordConverter.convertFromDto(wordDto); //wordConverter.convertDtoToEntity(wordDto);
         wordRepository.save(word);
     }
 

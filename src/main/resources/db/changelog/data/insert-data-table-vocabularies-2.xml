@@ -16,7 +16,6 @@
         <insert tableName="VOCABULARIES">
             <column name="THEME" value="fruits(фрукты)"></column>
             <column name="IS_PRIVATE" value="true"></column>
-            <column name="USER_ID" value="2"></column>
         </insert>
 
     </changeSet>
