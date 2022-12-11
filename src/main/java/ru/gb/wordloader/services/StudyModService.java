@@ -5,5 +5,5 @@ import ru.gb.wordloader.dto.WordDto;
 import java.util.List;
 
 public interface StudyModService {
-    List<WordDto> initialize(long vocabularyId, int wordsInTest);
+    String initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest);
 }
