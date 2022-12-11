@@ -7,10 +7,7 @@ import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.repositories.VocabularyRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
@@ -19,7 +16,7 @@ public class StudyModServiceImpl implements StudyModService{
     private int minBreakPeriod;
     private int correctAttemptsRequired;
     private int wordsInTest;
-    private int counter;
+    private int sizeVocabulary;
 
     @Autowired
     public StudyModServiceImpl(VocabularyRepository vocabularyRepository) {
@@ -35,6 +32,7 @@ public class StudyModServiceImpl implements StudyModService{
         Set<Integer> integers = new HashSet<>();
 
         Vocabulary vocabulary = vocabularyRepository.getByTheme(theme);
+        sizeVocabulary = vocabulary.getWords().size();
         wordDtoList = new ArrayList<>();
 
         for (int i = 0; i < wordsInTest; i++) {
@@ -56,7 +54,7 @@ public class StudyModServiceImpl implements StudyModService{
     }
 
     private int generateIndex(){
-        return (int) (Math.random() * wordsInTest);
+        return (int) (Math.random() * sizeVocabulary);
     }
 
 }
