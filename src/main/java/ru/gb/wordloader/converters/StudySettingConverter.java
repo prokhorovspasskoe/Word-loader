@@ -14,7 +14,7 @@ public class StudySettingConverter {
 
     public static StudySettingDto convertToDto(StudySetting studySetting) {
         return StudySettingDto.builder()
-                .vocabulary_id(studySetting.getVocabulary().getId())
+                .theme(studySetting.getVocabulary().getTheme())
                 .correctAttemptsRequired(studySetting.getCorrectAttemptsRequired())
                 .minBreakPeriod(studySetting.getMinBreakPeriod())
                 .wordsInTest(studySetting.getWordsInTest())
