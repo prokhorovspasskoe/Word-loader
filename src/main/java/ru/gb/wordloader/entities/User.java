@@ -45,13 +45,14 @@ public class User {
     )
     private List<Vocabulary> vocabularies;
 
-/*
+
     @OneToMany
+    @JoinColumn(name = "user_id")
     private List<StudySetting> studySettings;
 
     @OneToMany
+    @JoinColumn(name = "user_id")
     private List<StudyPlan> studyPlans;
-*/
 
     @ManyToMany
     @JoinTable(

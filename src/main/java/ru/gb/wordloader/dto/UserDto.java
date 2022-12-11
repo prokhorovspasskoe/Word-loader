@@ -19,6 +19,7 @@ public class UserDto {
 
     private List<VocabularyDto> vocabularies;
 
-//    private List<StudySettingDto> studySettings;
+    private List<StudySettingDto> studySettings;
 
+    private List<StudyPlanDto> studyPlans;
 }
