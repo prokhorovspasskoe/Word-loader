@@ -15,6 +15,8 @@ import javax.persistence.*;
 @Builder
 public class StudySettingDto {
 
+    private Long user_id;
+
     private Long vocabulary_id;
 
     private int minBreakPeriod;
