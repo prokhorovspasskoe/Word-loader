@@ -39,6 +39,7 @@ public class StudyModServiceImpl implements StudyModService{
 
         for (int i = 0; i < wordsInTest; i++) {
             int index = generateIndex();
+
             if(integers.add(index)) {
                 WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
                 wordDtoList.add(wordDto);
