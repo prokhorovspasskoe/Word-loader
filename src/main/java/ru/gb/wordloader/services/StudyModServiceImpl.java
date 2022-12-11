@@ -8,7 +8,9 @@ import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.repositories.VocabularyRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
@@ -16,7 +18,8 @@ public class StudyModServiceImpl implements StudyModService{
     private List<WordDto> wordDtoList;
     private int minBreakPeriod;
     private int correctAttemptsRequired;
-    private int wordInTest;
+    private int wordsInTest;
+    private int counter;
 
     @Autowired
     public StudyModServiceImpl(VocabularyRepository vocabularyRepository) {
@@ -24,20 +27,35 @@ public class StudyModServiceImpl implements StudyModService{
     }
 
     @Override
-    public String initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest) {
+    public List<WordDto> initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest) {
         this.correctAttemptsRequired = correctAttemptsRequired;
-        this.wordInTest = wordsInTest;
+        this.wordsInTest = wordsInTest;
         this.minBreakPeriod = minBreakPeriod;
+
+        Set<Integer> integers = new HashSet<>();
 
         Vocabulary vocabulary = vocabularyRepository.getByTheme(theme);
         wordDtoList = new ArrayList<>();
 
-        //В дальнейшем реализую рандомный выбор слов из словаря
         for (int i = 0; i < wordsInTest; i++) {
-           WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(i));
-           wordDtoList.add(wordDto);
+            int index = generateIndex();
+            if(integers.add(index)) {
+                WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
+                wordDtoList.add(wordDto);
+            }else {
+                i--;
+                continue;
+            }
+
+            WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
+            wordDtoList.add(wordDto);
         }
 
-        return wordDtoList.get(0).getOriginal();
+        return wordDtoList;
     }
+
+    private int generateIndex(){
+        return (int) (Math.random() * wordsInTest);
+    }
+
 }
