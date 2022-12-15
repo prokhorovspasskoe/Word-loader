@@ -86,7 +86,7 @@ public class VocabularyControllerTest {
     public void addNewVocabulary() throws Exception {
         List<WordDto> wordDtoList = new ArrayList<>();
         wordDtoList.add(personalAccountService.findWordById(1L));
-        VocabularyDto vocabularyDto= new VocabularyDto().builder()
+        VocabularyDto vocabularyDto= VocabularyDto.builder()
                 .theme("test")
                 .isPrivate(false)
                 .words(wordDtoList)
