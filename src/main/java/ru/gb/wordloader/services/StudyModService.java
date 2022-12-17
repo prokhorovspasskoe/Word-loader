@@ -1,10 +1,14 @@
 package ru.gb.wordloader.services;
 
-import ru.gb.wordloader.dto.WordDto;
-
-import java.util.List;
+import ru.gb.wordloader.dto.TestDto;
+import ru.gb.wordloader.dto.UserWordDto;
 
 public interface StudyModService {
-    List<WordDto> initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest);
+
+    TestDto getTest(Long studyPlanId);
+
+    String wordCheck(UserWordDto userWordDto);
+
+    void takeVocabularyToLearning(Long studyPlanId);
 
 }
