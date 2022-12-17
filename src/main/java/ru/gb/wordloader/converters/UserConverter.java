@@ -10,8 +10,8 @@ public class UserConverter {
                 .id(user.getId())
                 .username(user.getName())
                 .vocabularies(VocabularyConverter.convertToDtoList(user.getVocabularies()))
-                //.studyPlans(StudyPlanConverter.convertToDtoList(user.getStudyPlans()))
-                //.studySettings(StudySettingConverter.convertToDtoList(user.getStudySettings()))
+                .studyPlans(StudyPlanConverter.convertToDtoList(user.getStudyPlans()))
+                .studySettings(StudySettingConverter.convertToDtoList(user.getStudySettings()))
                 .build();
     }
 }
