@@ -2,21 +2,15 @@ package ru.gb.wordloader.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gb.wordloader.converters.WordConverter;
-import ru.gb.wordloader.dto.WordDto;
-import ru.gb.wordloader.entities.Vocabulary;
+import ru.gb.wordloader.dto.TestDto;
+import ru.gb.wordloader.dto.UserWordDto;
 import ru.gb.wordloader.repositories.VocabularyRepository;
 
-import java.util.*;
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
     private final VocabularyRepository vocabularyRepository;
-    private List<WordDto> wordDtoList;
-    private int minBreakPeriod;
-    private int correctAttemptsRequired;
-    private int wordsInTest;
-    private int sizeVocabulary;
+
 
     @Autowired
     public StudyModServiceImpl(VocabularyRepository vocabularyRepository) {
@@ -24,37 +18,18 @@ public class StudyModServiceImpl implements StudyModService{
     }
 
     @Override
-    public List<WordDto> initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest) {
-        this.correctAttemptsRequired = correctAttemptsRequired;
-        this.wordsInTest = wordsInTest;
-        this.minBreakPeriod = minBreakPeriod;
-
-        Set<Integer> integers = new HashSet<>();
-
-        Vocabulary vocabulary = vocabularyRepository.getByTheme(theme);
-        sizeVocabulary = vocabulary.getWords().size();
-        wordDtoList = new ArrayList<>();
-
-        for (int i = 0; i < wordsInTest; i++) {
-            int index = generateIndex();
-
-            if(integers.add(index)) {
-                WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
-                wordDtoList.add(wordDto);
-            }else {
-                i--;
-                continue;
-            }
-
-            WordDto wordDto = WordConverter.convertToDTO(vocabulary.getWords().get(index));
-            wordDtoList.add(wordDto);
-        }
-
-        return wordDtoList;
+    public TestDto getTest(Long studyPlanId) {
+        return null;
     }
 
-    private int generateIndex(){
-        return (int) (Math.random() * sizeVocabulary);
+    @Override
+    public String wordCheck(UserWordDto userWordDto) {
+        return null;
+    }
+
+    @Override
+    public void takeVocabularyToLearning(Long studyPlanId) {
+
     }
 
 }

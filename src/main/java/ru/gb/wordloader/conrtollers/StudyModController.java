@@ -1,11 +1,12 @@
 package ru.gb.wordloader.conrtollers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.dto.*;
 import ru.gb.wordloader.services.StudyModService;
 
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -13,37 +14,27 @@ import java.util.List;
 public class StudyModController {
 
     private final StudyModService studyModService;
-    //private List<WordDto> repeatList;
 
+    @Autowired
     public StudyModController(StudyModService studyModService) {
         this.studyModService = studyModService;
     }
 
-    /*
-    @PostMapping("/init")
-    public List<WordDto> initialize(StudySettingDto settingDto){
-        repeatList = studyModService.initialize(settingDto.getTheme(), settingDto.getMinBreakPeriod(),
-                settingDto.getCorrectAttemptsRequired(), settingDto.getWordsInTest());
-        return repeatList;
-    }
-    @GetMapping("/repeat")
-    public List<WordDto>repeatTest(){
-        return this.repeatList;
-    }
-    */
-
     @GetMapping("/test/{studyPlan_id}")
-    public TestDto getTest(@PathVariable("id") long id) {
-        return null;
+    public TestDto getTest(@PathVariable("studyPlan_id") Long studyPlanId) {
+        return studyModService.getTest(studyPlanId);
     }
 
     @PostMapping("/wordCheck")
     public ResponseEntity<?> wordCheck(@RequestBody UserWordDto userWordDto) {
-        return null;
+
+        String checkResult = studyModService.wordCheck(userWordDto); //Пока в реализации вернём CORRECT или WRONG
+
+        return new ResponseEntity<>(checkResult, HttpStatus.OK);
     }
 
-    @PostMapping("/takeVocabulary/{studyPlanId}")
-    public void takeVocabularyToLearning(@PathVariable("studyPlanId") long studyPlanId) {
-
+    @PostMapping("/takeVocabulary/{studyPlan_id}")
+    public void takeVocabularyToLearning(@PathVariable("studyPlan_id") Long studyPlanId) {
+        studyModService.takeVocabularyToLearning(studyPlanId);
     }
 }
