@@ -66,20 +66,15 @@ public class RegistrationControllerTest {
 
     @Test
     @Order(2)
-    //TODO удаление после тестов
     void registrationNewUser() throws Exception {
         User user = userService.findByName("test");
         if (user != null) {
             userService.deleteUser(user.getId());
         }
-        RegistrationUserDto userDto = new RegistrationUserDto().builder()
+        RegistrationUserDto userDto = RegistrationUserDto.builder()
                 .username("test")
                 .password("test")
                 .matchingPassword("test")
-        RegistrationUserDto userDto = new RegistrationUserDto().builder()
-                .username("test7")
-                .password("test7")
-                .matchingPassword("test7")
                 .build();
         mockMvc.perform(postToJson("/api/v1/registration/signup", userDto)).andExpect(status().is2xxSuccessful());
     }
@@ -88,7 +83,7 @@ public class RegistrationControllerTest {
     @Order(3)
     //TODO сделать общего пользователя с другими тестами
     void registrationWithExistUsername() throws Exception {
-        RegistrationUserDto userDto = new RegistrationUserDto().builder()
+        RegistrationUserDto userDto = RegistrationUserDto.builder()
                 .username("test7")
                 .password("test7")
                 .matchingPassword("test7")
@@ -98,7 +93,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registationWithMismatchPass () throws Exception {
-        RegistrationUserDto userDto = new RegistrationUserDto().builder()
+        RegistrationUserDto userDto = RegistrationUserDto.builder()
                 .username("test8")
                 .password("test8")
                 .matchingPassword("test7")
