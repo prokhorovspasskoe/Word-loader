@@ -25,16 +25,28 @@ public class StudyModController {
         return studyModService.getTest(studyPlanId);
     }
 
+
     @PostMapping("/wordCheck")
     public ResponseEntity<?> wordCheck(@RequestBody UserWordDto userWordDto) {
+        try {
+            String checkResult = studyModService.wordCheck(userWordDto); //Пока в реализации вернём CORRECT или WRONG
 
-        String checkResult = studyModService.wordCheck(userWordDto); //Пока в реализации вернём CORRECT или WRONG
-
-        return new ResponseEntity<>(checkResult, HttpStatus.OK);
+            return new ResponseEntity<>(checkResult, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("ERROR", HttpStatus.OK);
+        }
     }
 
-    @PostMapping("/takeVocabulary/{studyPlan_id}")
-    public void takeVocabularyToLearning(@PathVariable("studyPlan_id") Long studyPlanId) {
-        studyModService.takeVocabularyToLearning(studyPlanId);
+    @PostMapping("/takeVocabulary/{vocabulary_id}")
+    public ResponseEntity<?> takeVocabularyToLearning(@PathVariable("vocabulary_id") Long vocabularyId) {
+        try {
+            studyModService.takeVocabularyToStudy(vocabularyId);
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("ERROR", HttpStatus.OK);
+        }
     }
 }
+

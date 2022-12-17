@@ -37,5 +37,8 @@
     <include file="tables/create-table-user-roles.xml" relativeToChangelogFile="true"/>
     <include file="data/insert-data-table-roles.xml" relativeToChangelogFile="true"/>
 
+    <!-- CONSTRAINTS на таблицы STUDY_PLANS и STUDY_SETTINGS-->
+    <include file="constraints/create-study-plans-unique-constraint.xml" relativeToChangelogFile="true"/>
+    <include file="constraints/create-study-settings-unique-constraint.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
