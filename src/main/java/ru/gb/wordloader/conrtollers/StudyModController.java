@@ -39,8 +39,14 @@ public class StudyModController {
     }
 
     @PostMapping("/takeVocabulary/{vocabulary_id}")
-    public void takeVocabularyToLearning(@PathVariable("vocabulary_id") Long vocabularyId) {
-        studyModService.takeVocabularyToLearning(vocabularyId);
+    public ResponseEntity<?> takeVocabularyToLearning(@PathVariable("vocabulary_id") Long vocabularyId) {
+        try {
+            studyModService.takeVocabularyToStudy(vocabularyId);
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("ERROR", HttpStatus.OK);
+        }
     }
 }
 

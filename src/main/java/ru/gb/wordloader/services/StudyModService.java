@@ -9,6 +9,6 @@ public interface StudyModService {
 
     String wordCheck(UserWordDto userWordDto);
 
-    void takeVocabularyToLearning(Long vocabularyId);
+    void takeVocabularyToStudy(Long vocabularyId);
 
 }
