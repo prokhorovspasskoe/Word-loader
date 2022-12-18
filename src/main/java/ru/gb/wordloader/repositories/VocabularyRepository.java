@@ -11,5 +11,8 @@ import java.util.List;
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
     @Query(value = "select * from vocabularies where theme=?1", nativeQuery = true)
     Vocabulary getByTheme(String theme);
-}
 
+    @Query(value = "select * from vocabularies where id = (select vocabulary_id from study_plans where id = :id)", nativeQuery = true)
+    Vocabulary getByStudyPlanId(long id);
+
+}
