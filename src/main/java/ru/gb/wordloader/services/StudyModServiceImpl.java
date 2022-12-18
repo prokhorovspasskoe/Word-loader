@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.gb.wordloader.converters.StudyPlanConverter;
+import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.*;
 import ru.gb.wordloader.entities.*;
 
@@ -41,16 +43,28 @@ public class StudyModServiceImpl implements StudyModService{
 
     @Override
     public TestDto getTest(Long studyPlanId) {
-        //TODO раскомментить аутентификацию
         //TODO проверку по времени
-        //Получаем id user'a и vocabulary
+        //Получаем id user'a и vocabulary и находим настройки режима изучения
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByName(auth.getName());
         VocabularyDto vocabularyDto = personalAccountService.getVocabularyByStudyPlanId(studyPlanId);
         StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
         int wordsInTest = studySetting.getWordsInTest();
-        //Создаем список слов
+        int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
+
+        //Получаем слова в словаре и исключаем изученные
         List<WordDto> wordsDto = vocabularyDto.getWords();
+        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+        StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
+        List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
+        for (int i = 0; i < learnedWords.size(); i++) {
+            if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
+                WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
+                wordsDto.remove(deleteWordDto);
+                }
+            }
+
+        //Создаем список слов
         List<WordDto> testWordDtos = new ArrayList<WordDto>();
         if (wordsInTest > wordsDto.size()) {
             Collections.shuffle(wordsDto);
