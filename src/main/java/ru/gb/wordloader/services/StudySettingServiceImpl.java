@@ -20,4 +20,9 @@ public class StudySettingServiceImpl implements StudySettingService {
     public void save(StudySetting studySetting) {
         studySettingRepository.save(studySetting);
     }
+
+    @Override
+    public StudySetting getSettingsUserVocabulary(long userId, long vocabularyId) {
+        return studySettingRepository.getByUserVocabulary(userId, vocabularyId);
+    }
 }
