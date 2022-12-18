@@ -4,18 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.gb.wordloader.dto.TestDto;
-import ru.gb.wordloader.dto.UserWordDto;
+import ru.gb.wordloader.converters.StudyPlanConverter;
+import ru.gb.wordloader.converters.WordConverter;
+import ru.gb.wordloader.dto.*;
 import ru.gb.wordloader.entities.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
 
+    private final VocabularyService vocabularyService;
+    private final WordService wordService;
     private final StudyProgressService studyProgressService;
     private final UserService userService;
     private final StudyPlanService studyPlanService;
@@ -23,8 +29,11 @@ public class StudyModServiceImpl implements StudyModService{
     private final PersonalAccountService personalAccountService;
 
 
+
     @Autowired
-    public StudyModServiceImpl(StudyProgressService studyProgressService, UserService userService, StudyPlanService studyPlanService, StudySettingService studySettingService, PersonalAccountService personalAccountService) {
+    public StudyModServiceImpl(VocabularyService vocabularyService, WordService wordService, StudyProgressService studyProgressService, UserService userService, StudyPlanService studyPlanService, StudySettingService studySettingService, PersonalAccountService personalAccountService) {
+        this.vocabularyService = vocabularyService;
+        this.wordService = wordService;
         this.studyProgressService = studyProgressService;
         this.userService = userService;
         this.studyPlanService = studyPlanService;
@@ -34,7 +43,48 @@ public class StudyModServiceImpl implements StudyModService{
 
     @Override
     public TestDto getTest(Long studyPlanId) {
-        return null;
+        //TODO проверку по времени
+        //Получаем id user'a и vocabulary и находим настройки режима изучения
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByName(auth.getName());
+        VocabularyDto vocabularyDto = personalAccountService.getVocabularyByStudyPlanId(studyPlanId);
+        StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
+        int wordsInTest = studySetting.getWordsInTest();
+        int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
+
+        //Получаем слова в словаре и исключаем изученные
+        List<WordDto> wordsDto = vocabularyDto.getWords();
+        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+        StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
+        List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
+        for (int i = 0; i < learnedWords.size(); i++) {
+            if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
+                WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
+                wordsDto.remove(deleteWordDto);
+                }
+            }
+
+        //Создаем список слов
+        List<WordDto> testWordDtos = new ArrayList<WordDto>();
+        if (wordsInTest > wordsDto.size()) {
+            Collections.shuffle(wordsDto);
+            TestDto testDto = TestDto.builder()
+                    .studyPlan_id(studyPlanId)
+                    .words(wordsDto)
+                    .build();
+            return testDto;
+        } else {
+            Collections.shuffle(wordsDto);
+            for (int i = 0; i < wordsInTest; i++) {
+                testWordDtos.add(wordsDto.get(i));
+            }
+            TestDto testDto = TestDto.builder()
+                    .studyPlan_id(studyPlanId)
+                    .words(wordsDto)
+                    .build();
+            return testDto;
+
+        }
     }
 
 
@@ -45,7 +95,7 @@ public class StudyModServiceImpl implements StudyModService{
     public String wordCheck(UserWordDto userWordDto) {
 
         //Получаем слово
-        Word word = personalAccountService.findWordById(userWordDto.getWord_id());
+        Word word = wordService.findById(userWordDto.getWord_id()).orElseThrow();
 
         //Значение, которое ввёл пользователь, обрезаем пробелы
         String userTypedValue = userWordDto.getUserTypedValue().trim();
@@ -69,7 +119,7 @@ public class StudyModServiceImpl implements StudyModService{
     @Override
     public void takeVocabularyToStudy(Long vocabularyId) {
         //Получаем словарь, который хотим взять на изучение
-        Vocabulary vocabulary = personalAccountService.getVocabularyById(vocabularyId);
+        Vocabulary vocabulary = vocabularyService.findById(vocabularyId).orElseThrow();
 
         //Получаем пользователя, под которым авторизовались
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,4 +144,5 @@ public class StudyModServiceImpl implements StudyModService{
                 .build();
         studySettingService.save(studySetting);
     }
+
 }
