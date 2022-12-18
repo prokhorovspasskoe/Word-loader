@@ -39,9 +39,9 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public VocabularyDto getVocabularyById(long id) {
-        Vocabulary vocabulary = vocabularyRepository.getReferenceById(id);
-        return VocabularyConverter.convertToDto(vocabulary);
+    public Vocabulary getVocabularyById(long id) {
+        Optional<Vocabulary> vocabulary = vocabularyRepository.findById(id);
+        return vocabulary.get();
     }
 
     @Override
@@ -57,28 +57,19 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
 
     @Override
     public void addWord(WordDto wordDto) {
-        /*
-        WordConverter wordConverter = new WordConverter();
-        Word word = wordConverter.convertDtoToEntity(wordDto);
-        */
         Word word = WordConverter.convertFromDto(wordDto);
-
         wordRepository.save(word);
     }
+
     @Override
-    public WordDto findWordById(Long id) {
+    public Word findWordById(Long id) {
         Optional<Word> word = wordRepository.findById(id);
-        /*
-        WordConverter wordConverter = new WordConverter();
-        return wordConverter.convertEntityToDTO(word.get());
-        */
-        return WordConverter.convertToDTO(word.get());
+        return word.get();
     }
 
     @Override
     public void updateWord(WordDto wordDto) {
-        //WordConverter wordConverter = new WordConverter();
-        Word word = WordConverter.convertFromDto(wordDto); //wordConverter.convertDtoToEntity(wordDto);
+        Word word = WordConverter.convertFromDto(wordDto);
         wordRepository.save(word);
     }
 

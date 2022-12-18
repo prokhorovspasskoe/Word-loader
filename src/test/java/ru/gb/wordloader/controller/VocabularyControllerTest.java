@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import ru.gb.wordloader.conrtollers.VocabularyController;
+import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.services.PersonalAccountService;
@@ -85,7 +86,7 @@ public class VocabularyControllerTest {
     @Order(1)
     public void addNewVocabulary() throws Exception {
         List<WordDto> wordDtoList = new ArrayList<>();
-        wordDtoList.add(personalAccountService.findWordById(1L));
+        wordDtoList.add(WordConverter.convertToDTO(personalAccountService.findWordById(1L)));
         VocabularyDto vocabularyDto= VocabularyDto.builder()
                 .theme("test")
                 .isPrivate(false)

@@ -11,29 +11,25 @@ import ru.gb.wordloader.entities.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 
 @Service
 public class StudyModServiceImpl implements StudyModService{
 
-    private final VocabularyService vocabularyService;
-    private final WordService wordService;
     private final StudyProgressService studyProgressService;
     private final UserService userService;
     private final StudyPlanService studyPlanService;
     private final StudySettingService studySettingService;
-
+    private final PersonalAccountService personalAccountService;
 
 
     @Autowired
-    public StudyModServiceImpl(VocabularyService vocabularyService, WordService wordService, StudyProgressService studyProgressService, UserService userService, StudyPlanService studyPlanService, StudySettingService studySettingService) {
-        this.vocabularyService = vocabularyService;
-        this.wordService = wordService;
+    public StudyModServiceImpl(StudyProgressService studyProgressService, UserService userService, StudyPlanService studyPlanService, StudySettingService studySettingService, PersonalAccountService personalAccountService) {
         this.studyProgressService = studyProgressService;
         this.userService = userService;
         this.studyPlanService = studyPlanService;
         this.studySettingService = studySettingService;
+        this.personalAccountService = personalAccountService;
     }
 
     @Override
@@ -49,7 +45,7 @@ public class StudyModServiceImpl implements StudyModService{
     public String wordCheck(UserWordDto userWordDto) {
 
         //Получаем слово
-        Word word = wordService.findById(userWordDto.getWord_id()).orElseThrow();
+        Word word = personalAccountService.findWordById(userWordDto.getWord_id());
 
         //Значение, которое ввёл пользователь, обрезаем пробелы
         String userTypedValue = userWordDto.getUserTypedValue().trim();
@@ -73,7 +69,7 @@ public class StudyModServiceImpl implements StudyModService{
     @Override
     public void takeVocabularyToStudy(Long vocabularyId) {
         //Получаем словарь, который хотим взять на изучение
-        Vocabulary vocabulary = vocabularyService.findById(vocabularyId).orElseThrow();
+        Vocabulary vocabulary = personalAccountService.getVocabularyById(vocabularyId);
 
         //Получаем пользователя, под которым авторизовались
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -98,5 +94,4 @@ public class StudyModServiceImpl implements StudyModService{
                 .build();
         studySettingService.save(studySetting);
     }
-
 }
