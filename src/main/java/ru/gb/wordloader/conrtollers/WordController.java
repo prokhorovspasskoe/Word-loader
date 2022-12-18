@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.services.PersonalAccountService;
 import ru.gb.wordloader.services.exceptions.NotFoundException;
@@ -21,7 +22,7 @@ public class WordController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<WordDto> getWord(@PathVariable("id")Long id){
-        WordDto wordDto = personalAccountService.findWordById(id);
+        WordDto wordDto = WordConverter.convertToDTO(personalAccountService.findWordById(id));
         return new ResponseEntity<>(wordDto, HttpStatus.OK);
     }
     @PostMapping("/add")

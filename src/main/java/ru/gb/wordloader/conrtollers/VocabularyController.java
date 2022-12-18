@@ -2,6 +2,7 @@ package ru.gb.wordloader.conrtollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
 import ru.gb.wordloader.services.PersonalAccountService;
 
@@ -18,7 +19,7 @@ public class VocabularyController {
 
     @GetMapping("/get/{id}")
     public VocabularyDto getVocabularyById(@PathVariable("id") long id){
-        return personalAccountService.getVocabularyById(id);
+        return VocabularyConverter.convertToDto(personalAccountService.getVocabularyById(id));
     }
 
     @PostMapping("/add")
