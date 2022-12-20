@@ -27,6 +27,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name="words")
+
 public class Word {
 
     @Id
@@ -41,4 +42,24 @@ public class Word {
 
     @ManyToMany(mappedBy = "words", fetch = FetchType.LAZY)
     private List<Vocabulary> vocabularies;
+
+    //Переопределяем метод equals()
+    //Сверяем сущности Word по ID, которые уникальны на уровне БД
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Word))
+            return false;
+
+        Word other = (Word) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
