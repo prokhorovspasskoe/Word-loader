@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.StudyPlanConverter;
+import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.*;
 import ru.gb.wordloader.entities.*;
@@ -40,19 +41,20 @@ public class StudyModServiceImpl implements StudyModService{
     @Override
     public TestDto getTest(Long studyPlanId) {
         //TODO проверку по времени
-        //Получаем id user'a и vocabulary и находим настройки режима изучения
+        //Получаем user'a и vocabulary и находим настройки режима изучения
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByName(auth.getName());
-        VocabularyDto vocabularyDto = personalAccountService.getVocabularyByStudyPlanId(studyPlanId);
-        StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
-        int wordsInTest = studySetting.getWordsInTest();
-        int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
+        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+        Vocabulary vocabulary = studyPlan.getVocabulary();
+        StudySetting studySetting = studySettingService.findByUserAndVocabulary(user, vocabulary);
 
         //Получаем слова в словаре и исключаем изученные
+        VocabularyDto vocabularyDto = VocabularyConverter.convertToDto(vocabulary);
         List<WordDto> wordsDto = vocabularyDto.getWords();
-        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
         StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
         List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
+        int wordsInTest = studySetting.getWordsInTest();
+        int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
         for (int i = 0; i < learnedWords.size(); i++) {
             if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
                 WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
