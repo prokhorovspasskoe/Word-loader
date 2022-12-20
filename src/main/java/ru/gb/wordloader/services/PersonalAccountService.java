@@ -10,7 +10,6 @@ public interface PersonalAccountService {
     //Методы работы со словарями
     void createVocabulary(VocabularyDto vocabularyDto);
     Vocabulary getVocabularyById(long id);
-    VocabularyDto getVocabularyByStudyPlanId(long id);
     VocabularyDto updateVocabulary(VocabularyDto vocabularyDto);
     void deleteVocabularyById(long id);
 

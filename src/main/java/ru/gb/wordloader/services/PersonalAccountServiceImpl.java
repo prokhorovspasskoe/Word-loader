@@ -47,13 +47,6 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public VocabularyDto getVocabularyByStudyPlanId(long id) {
-        Vocabulary vocabulary = vocabularyRepository.getByStudyPlanId(id);
-        VocabularyDto vocabularyDto = VocabularyConverter.convertToDto(vocabulary);
-        return vocabularyDto;
-    }
-
-    @Override
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
         Vocabulary vocabulary = VocabularyConverter.convertFromDto(vocabularyDto);
 
