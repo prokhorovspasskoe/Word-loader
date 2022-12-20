@@ -118,8 +118,11 @@ public class StudyModServiceImpl implements StudyModService{
         Vocabulary vocabulary = personalAccountService.getVocabularyById(vocabularyId);
 
         //Получаем пользователя, под которым авторизовались
+        /*
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByName(auth.getName());
+        */
+        User user = userService.getAuthenticatedUser();
 
         //Прописываем словарь в изучаемые
         StudyPlan studyPlan = StudyPlan.builder()

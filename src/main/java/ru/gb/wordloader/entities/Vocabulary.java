@@ -38,8 +38,9 @@ public class Vocabulary {
     @Column(name = "is_private")
     private boolean isPrivate;
 
-    @ManyToMany(mappedBy = "vocabularies", fetch = FetchType.LAZY)
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -48,5 +49,4 @@ public class Vocabulary {
             inverseJoinColumns = @JoinColumn(name = "word_id")
     )
     private List<Word> words;
-
 }

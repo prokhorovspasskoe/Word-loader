@@ -1,6 +1,8 @@
 package ru.gb.wordloader.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.UserConverter;
@@ -78,6 +80,13 @@ public class UserServiceImpl implements UserService{
     public UserDto getUserAllInfo(String username) {
         User user = userRepository.findFirstByName(username);
         return UserConverter.convertToDto(user);
+    }
+
+    //Получаем пользователя, под которым авторизовались
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return findByName(auth.getName());
     }
 
 }

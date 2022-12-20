@@ -37,12 +37,8 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_vocabularies",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "vocabulary_id")
-    )
+    @OneToMany
+    @JoinColumn(name = "user_id")
     private List<Vocabulary> vocabularies;
 
 
@@ -61,4 +57,24 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    //Переопределяем метод equals()
+    //Сверяем сущности User по ID, которые уникальны на уровне БД
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof User))
+            return false;
+
+        User other = (User) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -18,19 +18,22 @@ import java.util.Optional;
 public class PersonalAccountServiceImpl implements PersonalAccountService{
     private final VocabularyRepository vocabularyRepository;
     private final WordRepository wordRepository;
+    private final UserService userService;
 
     @Autowired
-    public PersonalAccountServiceImpl(VocabularyRepository vocabularyRepository, WordRepository wordRepository) {
+    public PersonalAccountServiceImpl(VocabularyRepository vocabularyRepository, WordRepository wordRepository, UserService userService/*, StudyPlanService studyPlanService*/) {
         this.vocabularyRepository = vocabularyRepository;
         this.wordRepository = wordRepository;
+        this.userService = userService;
     }
 
     @Override
     public void createVocabulary(VocabularyDto vocabularyDto) {
         Vocabulary vocabulary = new Vocabulary();
+        vocabulary.setUser(userService.getAuthenticatedUser());
         vocabulary.setTheme(vocabularyDto.getTheme());
         vocabulary.setPrivate(vocabularyDto.isPrivate());
-        List<Word> wordList = WordConverter.convertFromDtoList(vocabularyDto.getWords()); //wordConverter.convertFromDtoToEntity(vocabularyDto.getWords());
+        List<Word> wordList = WordConverter.convertFromDtoList(vocabularyDto.getWords());
         vocabulary.setWords(wordList);
         vocabularyRepository.save(vocabulary);
     }
@@ -51,9 +54,22 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     @Override
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
         Vocabulary vocabulary = VocabularyConverter.convertFromDto(vocabularyDto);
-        vocabulary = vocabularyRepository.save(vocabulary);
-        return VocabularyConverter.convertToDto(vocabulary);
+
+        // TODO
+        //   Добавить проверку, что публичный словарь нельзя изменять, если он взят
+        //   кем-нибудь на изучение
+        //Проверяем, что текущий авторизованный пользователь является автором словаря
+        if (vocabulary.getUser().equals(userService.getAuthenticatedUser())) {
+            vocabulary = vocabularyRepository.save(vocabulary);
+            return VocabularyConverter.convertToDto(vocabulary);
+        } else {
+            return null;
+        }
     }
+
+    // TODO
+    //   Добавить проверку, что словарь не взят никем на изучение,
+    //   иначе удалять нельзя
     @Override
     public void deleteVocabularyById(long id) {
         vocabularyRepository.deleteById(id);
