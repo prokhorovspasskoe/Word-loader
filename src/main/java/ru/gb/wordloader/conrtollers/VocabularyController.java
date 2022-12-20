@@ -1,5 +1,6 @@
 package ru.gb.wordloader.conrtollers;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.converters.VocabularyConverter;
@@ -9,6 +10,7 @@ import ru.gb.wordloader.services.PersonalAccountService;
 @RestController
 @RequestMapping("/api/v1/vocabulary")
 @CrossOrigin
+@Schema(description = "Методы работы со словарями.")
 public class VocabularyController {
     private final PersonalAccountService personalAccountService;
 
@@ -18,22 +20,26 @@ public class VocabularyController {
     }
 
     @GetMapping("/get/{id}")
+    @Schema(description = "Получение словаря по id.")
     public VocabularyDto getVocabularyById(@PathVariable("id") long id){
         return VocabularyConverter.convertToDto(personalAccountService.getVocabularyById(id));
     }
 
     @PostMapping("/add")
+    @Schema(description = "Создание нового словаря.")
     public void addVocabulary(@RequestBody VocabularyDto vocabularyDto){
         personalAccountService.createVocabulary(vocabularyDto);
     }
 
     @PutMapping("/put/{id}")
+    @Schema(description = "Изменение ранее созданного словаря по id словаря")
     public void updateVocabularyById(@PathVariable("id") long id, @RequestBody VocabularyDto vocabularyDto){
         vocabularyDto.setId(id);
         personalAccountService.updateVocabulary(vocabularyDto);
     }
 
     @DeleteMapping("/delete/{id}")
+    @Schema(description = "Удаление словаря по id.")
     public void deleteVocabularyById(@PathVariable("id") long id){
         personalAccountService.deleteVocabularyById(id);
     }
