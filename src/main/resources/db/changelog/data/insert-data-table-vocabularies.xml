@@ -14,8 +14,9 @@
     <changeSet id="insert_data_table.VOCABULARIES" author="ugryumov.alexey" context="postgresql" labels="insert_data_vocabularies_table">
 
         <insert tableName="VOCABULARIES">
-            <column name="THEME" value="vegetables(овощи)"></column>
-            <column name="IS_PRIVATE" value="false"></column>
+            <column name="THEME" value="vegetables(овощи)"/>
+            <column name="IS_PRIVATE" value="false"/>
+            <column name="USER_ID" value="1"/>
         </insert>
 
     </changeSet>
