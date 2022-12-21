@@ -21,12 +21,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/get/{user_id}")
+    @GetMapping("/getById/{user_id}")
     @Schema(description = "Получение информации о пользователе по id.")
     public UserDto getUserAllInfo(@PathVariable  long user_id){
         return userService.getUserAllInfo(user_id);
     }
 
+    @GetMapping("/getByName/{user_name}")
+    @Schema(description = "Получение информации о пользователе по userName.")
+    public UserDto getUserAllInfo(@PathVariable  String user_name){
+
+        return userService.getUserAllInfo(user_name);
+    }
+
+    // TODO
+    //   По информации Александра метод не работает, проверить, при необходимости исправить
     @GetMapping("/get/current-user")
     @Schema(description = "Получение информации о пользователе по username в http-заголовке")
     public UserDto getUserAllInfo(HttpServletRequest request){
