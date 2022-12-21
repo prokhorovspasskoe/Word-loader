@@ -1,14 +1,15 @@
 package ru.gb.wordloader.services;
 
+import org.springframework.http.ResponseEntity;
 import ru.gb.wordloader.dto.TestDto;
 import ru.gb.wordloader.dto.UserWordDto;
 
 public interface StudyModService {
 
-    TestDto getTest(Long studyPlanId);
+    ResponseEntity<?> getTest(Long studyPlanId);
 
     String wordCheck(UserWordDto userWordDto);
 
-    void takeVocabularyToStudy(Long vocabularyId);
+    ResponseEntity<?> takeVocabularyToStudy(Long vocabularyId);
 
 }

@@ -1,6 +1,8 @@
 package ru.gb.wordloader.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,48 +40,53 @@ public class StudyModServiceImpl implements StudyModService{
     }
 
     @Override
-    public TestDto getTest(Long studyPlanId) {
+    public ResponseEntity<?> getTest(Long studyPlanId) {
         //TODO проверку по времени
         //Получаем id user'a и vocabulary и находим настройки режима изучения
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByName(auth.getName());
         VocabularyDto vocabularyDto = personalAccountService.getVocabularyByStudyPlanId(studyPlanId);
-        StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
-        int wordsInTest = studySetting.getWordsInTest();
-        int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
 
-        //Получаем слова в словаре и исключаем изученные
-        List<WordDto> wordsDto = vocabularyDto.getWords();
-        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
-        StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
-        List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
-        for (int i = 0; i < learnedWords.size(); i++) {
-            if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
-                WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
-                wordsDto.remove(deleteWordDto);
+        if(vocabularyDto == null){
+            return new ResponseEntity<>("Dictionary not found.", HttpStatus.BAD_REQUEST);
+        }else{
+            StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
+            int wordsInTest = studySetting.getWordsInTest();
+            int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
+
+            //Получаем слова в словаре и исключаем изученные
+            List<WordDto> wordsDto = vocabularyDto.getWords();
+            StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+            StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
+            List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
+
+            for (int i = 0; i < learnedWords.size(); i++) {
+                if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
+                    WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
+                    wordsDto.remove(deleteWordDto);
                 }
             }
 
-        //Создаем список слов
-        List<WordDto> testWordDtos = new ArrayList<WordDto>();
-        if (wordsInTest > wordsDto.size()) {
-            Collections.shuffle(wordsDto);
-            TestDto testDto = TestDto.builder()
-                    .studyPlan_id(studyPlanId)
-                    .words(wordsDto)
-                    .build();
-            return testDto;
-        } else {
-            Collections.shuffle(wordsDto);
-            for (int i = 0; i < wordsInTest; i++) {
-                testWordDtos.add(wordsDto.get(i));
+            //Создаем список слов
+            List<WordDto> testWordDtos = new ArrayList<>();
+            if (wordsInTest > wordsDto.size()) {
+                Collections.shuffle(wordsDto);
+                TestDto testDto = TestDto.builder()
+                        .studyPlan_id(studyPlanId)
+                        .words(wordsDto)
+                        .build();
+                return new ResponseEntity<>(testDto, HttpStatus.OK);
+            } else {
+                Collections.shuffle(wordsDto);
+                for (int i = 0; i < wordsInTest; i++) {
+                    testWordDtos.add(wordsDto.get(i));
+                }
+                TestDto testDto = TestDto.builder()
+                        .studyPlan_id(studyPlanId)
+                        .words(wordsDto)
+                        .build();
+                return new ResponseEntity<>(testDto, HttpStatus.OK);
             }
-            TestDto testDto = TestDto.builder()
-                    .studyPlan_id(studyPlanId)
-                    .words(wordsDto)
-                    .build();
-            return testDto;
-
         }
     }
 
@@ -113,15 +120,15 @@ public class StudyModServiceImpl implements StudyModService{
     //  2. Добавление обеих записей должно быть в одной транзакции
 
     @Override
-    public void takeVocabularyToStudy(Long vocabularyId) {
+    public ResponseEntity<?> takeVocabularyToStudy(Long vocabularyId) {
         //Получаем словарь, который хотим взять на изучение
         Vocabulary vocabulary = personalAccountService.getVocabularyById(vocabularyId);
 
+        if (vocabulary == null){
+            return new ResponseEntity<>("There is no dictionary", HttpStatus.BAD_REQUEST);
+        }
+
         //Получаем пользователя, под которым авторизовались
-        /*
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByName(auth.getName());
-        */
         User user = userService.getAuthenticatedUser();
 
         //Прописываем словарь в изучаемые
@@ -142,6 +149,7 @@ public class StudyModServiceImpl implements StudyModService{
                 .minBreakPeriod(15)
                 .build();
         studySettingService.save(studySetting);
+        return new ResponseEntity<>("The dictionary is taken for study.", HttpStatus.OK);
     }
 
 }

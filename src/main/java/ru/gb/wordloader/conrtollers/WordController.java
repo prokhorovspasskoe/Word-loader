@@ -24,14 +24,20 @@ public class WordController {
 
     @GetMapping(path = "/{id}")
     @Schema(description = "Найти слово по id.")
-    public ResponseEntity<WordDto> getWord(@PathVariable("id")Long id){
+    public ResponseEntity<?> getWord(@PathVariable("id")Long id){
         WordDto wordDto = WordConverter.convertToDTO(personalAccountService.findWordById(id));
-        return new ResponseEntity<>(wordDto, HttpStatus.OK);
+        if(wordDto != null){
+            return new ResponseEntity<>(wordDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("The word is not in the dictionary", HttpStatus.BAD_REQUEST);
+        }
     }
     @PostMapping("/add")
     @Schema(description = "Добавить новое слово")
     public void addWord(@RequestBody WordDto wordDto){
-        personalAccountService.addWord(wordDto);
+        if(wordDto != null){
+            personalAccountService.addWord(wordDto);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
@@ -45,11 +51,5 @@ public class WordController {
     public void putWordById(@PathVariable long id, @RequestBody WordDto wordDto){
         wordDto.setId(id);
         personalAccountService.updateWord(wordDto);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
-
-        return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 }

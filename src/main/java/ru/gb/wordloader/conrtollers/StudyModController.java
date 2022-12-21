@@ -23,7 +23,7 @@ public class StudyModController {
     }
 
     @GetMapping("/test/{studyPlan_id}")
-    public TestDto getTest(@PathVariable("studyPlan_id") Long studyPlanId) {
+    public ResponseEntity<?> getTest(@PathVariable("studyPlan_id") Long studyPlanId) {
         return studyModService.getTest(studyPlanId);
     }
 
