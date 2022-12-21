@@ -19,9 +19,6 @@ public class StudySettingDto {
     @Schema(description = "id пользователя которому пренадлежат настройки.")
     private Long user_id;
 
-    @Schema(description = "Тема изучаемого словаря.")
-    private String theme;
-
     @Schema(description = "id изучаемого словаря.")
     private Long vocabulary_id;
     @Schema(description = "Минимальный промежуток в минутах после последнего теста.")
