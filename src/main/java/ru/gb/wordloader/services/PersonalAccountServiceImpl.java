@@ -1,6 +1,8 @@
 package ru.gb.wordloader.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.converters.WordConverter;
@@ -72,7 +74,9 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     //   иначе удалять нельзя
     @Override
     public void deleteVocabularyById(long id) {
-        vocabularyRepository.deleteById(id);
+        if(vocabularyRepository.findById(id).isPresent()){
+            vocabularyRepository.deleteById(id);
+        }
     }
 
     @Override
@@ -94,7 +98,12 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public void deleteWordById(long id) {
-        wordRepository.deleteById(id);
+    public ResponseEntity<?> deleteWordById(long id) {
+        if(wordRepository.findById(id).isPresent()){
+            wordRepository.deleteById(id);
+            return new ResponseEntity<>("The world delete.", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("The word being deleted does not exist", HttpStatus.BAD_REQUEST);
+        }
     }
 }

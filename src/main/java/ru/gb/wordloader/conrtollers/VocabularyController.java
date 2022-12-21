@@ -28,7 +28,9 @@ public class VocabularyController {
     @PostMapping("/add")
     @Schema(description = "Создание нового словаря.")
     public void addVocabulary(@RequestBody VocabularyDto vocabularyDto){
-        personalAccountService.createVocabulary(vocabularyDto);
+        if(vocabularyDto != null) {
+            personalAccountService.createVocabulary(vocabularyDto);
+        }
     }
 
     @PutMapping("/put/{id}")
