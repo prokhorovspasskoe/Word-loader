@@ -2,10 +2,13 @@ package ru.gb.wordloader.conrtollers;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
 import ru.gb.wordloader.services.PersonalAccountService;
+import ru.gb.wordloader.services.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/v1/vocabulary")
@@ -44,5 +47,11 @@ public class VocabularyController {
     @Schema(description = "Удаление словаря по id.")
     public void deleteVocabularyById(@PathVariable("id") long id){
         personalAccountService.deleteVocabularyById(id);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
+
+        return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 }
