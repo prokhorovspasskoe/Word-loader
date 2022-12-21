@@ -1,7 +1,6 @@
 package ru.gb.wordloader.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Слово из словаря.")
 public class WordDto {
 
-    @Schema(description = "Дата последнего теста по словарю.")
+    @Schema(description = "Уникальный идентификатор")
     private Long id;
 
     @Schema(description = "Оригинал на английском.")

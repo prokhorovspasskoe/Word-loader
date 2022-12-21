@@ -32,6 +32,7 @@ public class WordController {
             return new ResponseEntity<>("The word is not in the dictionary", HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("/add")
     @Schema(description = "Добавить новое слово")
     public void addWord(@RequestBody WordDto wordDto){
@@ -51,5 +52,11 @@ public class WordController {
     public void putWordById(@PathVariable long id, @RequestBody WordDto wordDto){
         wordDto.setId(id);
         personalAccountService.updateWord(wordDto);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
+
+        return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 }
