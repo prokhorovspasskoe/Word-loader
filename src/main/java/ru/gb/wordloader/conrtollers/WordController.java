@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.WordDto;
@@ -35,6 +36,7 @@ public class WordController {
 
     @PostMapping("/add")
     @Schema(description = "Добавить новое слово")
+    @Transactional
     public void addWord(@RequestBody WordDto wordDto){
         if(wordDto != null){
             personalAccountService.addWord(wordDto);
@@ -43,12 +45,14 @@ public class WordController {
 
     @DeleteMapping("/delete/{id}")
     @Schema(description = "Удалить слово по id.")
+    @Transactional
     public void deleteWordById(@PathVariable long id){
         personalAccountService.deleteWordById(id);
     }
 
     @PutMapping("/put/{id}")
     @Schema(description = "Изменить слово по id.")
+    @Transactional
     public void putWordById(@PathVariable long id, @RequestBody WordDto wordDto){
         wordDto.setId(id);
         personalAccountService.updateWord(wordDto);
