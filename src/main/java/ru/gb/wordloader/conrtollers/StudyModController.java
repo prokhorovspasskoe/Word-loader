@@ -1,5 +1,6 @@
 package ru.gb.wordloader.conrtollers;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import ru.gb.wordloader.services.StudyModService;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/study")
+@Schema(description = "Режим изучения")
 public class StudyModController {
 
     private final StudyModService studyModService;
@@ -21,12 +23,13 @@ public class StudyModController {
     }
 
     @GetMapping("/test/{studyPlan_id}")
-    public TestDto getTest(@PathVariable("studyPlan_id") Long studyPlanId) {
+    public ResponseEntity<?> getTest(@PathVariable("studyPlan_id") Long studyPlanId) {
         return studyModService.getTest(studyPlanId);
     }
 
 
     @PostMapping("/wordCheck")
+    @Schema(description = "Проверка введённого пользователем ответа.")
     public ResponseEntity<?> wordCheck(@RequestBody UserWordDto userWordDto) {
         try {
             String checkResult = studyModService.wordCheck(userWordDto); //Пока в реализации вернём CORRECT или WRONG
@@ -39,6 +42,7 @@ public class StudyModController {
     }
 
     @PostMapping("/takeVocabulary/{vocabulary_id}")
+    @Schema(description = "Взять словарь на изучение.")
     public ResponseEntity<?> takeVocabularyToLearning(@PathVariable("vocabulary_id") Long vocabularyId) {
         try {
             studyModService.takeVocabularyToStudy(vocabularyId);

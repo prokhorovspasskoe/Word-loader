@@ -8,6 +8,9 @@ import ru.gb.wordloader.entities.Vocabulary;
 
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
+
+    // TODO
+    //  Нам зачем нужен этот метод? Если не нужен, то убрать
     @Query(value = "select * from vocabularies where theme=?1", nativeQuery = true)
     Vocabulary getByTheme(String theme);
 }
