@@ -43,8 +43,16 @@ public class StudyModServiceImpl implements StudyModService{
     @Override
     public ResponseEntity<?> getTest(Long studyPlanId) {
         //Получаем user'a и vocabulary и находим настройки режима изучения
+
+        // TODO
+        //  Никак не отлавливается, если будет передан несуществующий studyPlanId
         StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+
+        // TODO
+        //   Имеет смысл удостовериться, что это именно авторизованный пользователь,
+        //   иначе можно передать в метод studyPlanId другого пользователя и он успешно вернёт чужой тест :)
         User user = studyPlan.getUser();
+
         Vocabulary vocabulary = studyPlan.getVocabulary();
         StudySetting studySetting = studySettingService.findByUserAndVocabulary(user, vocabulary);
 
@@ -53,7 +61,7 @@ public class StudyModServiceImpl implements StudyModService{
         int breakPeriod = studySetting.getMinBreakPeriod();
         LocalDateTime currentTime = LocalDateTime.now();
         if (currentTime.minusMinutes(breakPeriod).isBefore(lastProgress)) {
-            return new ResponseEntity<>("The break time from the previous test has not passed", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("The break time from the previous test has not been passed", HttpStatus.BAD_REQUEST);
         }
 
         //Получаем слова в словаре и исключаем изученные
@@ -97,10 +105,6 @@ public class StudyModServiceImpl implements StudyModService{
             }
         }
 
-
-    //TODO
-    // Реализовать доработку, отлавливающую исключения.
-
     @Override
     public String wordCheck(UserWordDto userWordDto) {
 
@@ -132,7 +136,7 @@ public class StudyModServiceImpl implements StudyModService{
         Vocabulary vocabulary = personalAccountService.getVocabularyById(vocabularyId);
 
         if (vocabulary == null){
-            return new ResponseEntity<>("There is no dictionary", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Vocabulary not found", HttpStatus.BAD_REQUEST);
         }
 
         //Получаем пользователя, под которым авторизовались

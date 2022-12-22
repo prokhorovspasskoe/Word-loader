@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
@@ -30,6 +31,7 @@ public class VocabularyController {
 
     @PostMapping("/add")
     @Schema(description = "Создание нового словаря.")
+    @Transactional
     public void addVocabulary(@RequestBody VocabularyDto vocabularyDto){
         if(vocabularyDto != null) {
             personalAccountService.createVocabulary(vocabularyDto);
@@ -38,6 +40,7 @@ public class VocabularyController {
 
     @PutMapping("/put/{id}")
     @Schema(description = "Изменение ранее созданного словаря по id словаря")
+    @Transactional
     public void updateVocabularyById(@PathVariable("id") long id, @RequestBody VocabularyDto vocabularyDto){
         vocabularyDto.setId(id);
         personalAccountService.updateVocabulary(vocabularyDto);
@@ -45,6 +48,7 @@ public class VocabularyController {
 
     @DeleteMapping("/delete/{id}")
     @Schema(description = "Удаление словаря по id.")
+    @Transactional
     public void deleteVocabularyById(@PathVariable("id") long id){
         personalAccountService.deleteVocabularyById(id);
     }
