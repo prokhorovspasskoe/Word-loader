@@ -42,34 +42,19 @@ public class StudyModServiceImpl implements StudyModService{
 
     @Override
     public ResponseEntity<?> getTest(Long studyPlanId) {
-        //TODO проверку по времени
         //Получаем user'a и vocabulary и находим настройки режима изучения
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByName(auth.getName());
-
-        VocabularyDto vocabularyDto = personalAccountService.getVocabularyByStudyPlanId(studyPlanId);
-
-        if(vocabularyDto == null){
-            return new ResponseEntity<>("Dictionary not found.", HttpStatus.BAD_REQUEST);
-        }else{
-            StudySetting studySetting = studySettingService.getSettingsUserVocabulary(user.getId(), vocabularyDto.getId());
-            int wordsInTest = studySetting.getWordsInTest();
-            int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
-
-            //Получаем слова в словаре и исключаем изученные
-            List<WordDto> wordsDto = vocabularyDto.getWords();
-            StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
-            StudyPlanDto studyPlanDto = StudyPlanConverter.convertToDto(studyPlan);
-            List<StudyWordDto> learnedWords = studyPlanDto.getStudyWords();
-
-            for (int i = 0; i < learnedWords.size(); i++) {
-                if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
-                    WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
-                    wordsDto.remove(deleteWordDto);
-
         StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
+        User user = studyPlan.getUser();
         Vocabulary vocabulary = studyPlan.getVocabulary();
         StudySetting studySetting = studySettingService.findByUserAndVocabulary(user, vocabulary);
+
+        //Проверяем по времени с последнего теста
+        LocalDateTime lastProgress = studyPlan.getLastProgress();
+        int breakPeriod = studySetting.getMinBreakPeriod();
+        LocalDateTime currentTime = LocalDateTime.now();
+        if (currentTime.minusMinutes(breakPeriod).isBefore(lastProgress)) {
+            return new ResponseEntity<>("The break time from the previous test has not passed", HttpStatus.BAD_REQUEST);
+        }
 
         //Получаем слова в словаре и исключаем изученные
         VocabularyDto vocabularyDto = VocabularyConverter.convertToDto(vocabulary);
@@ -79,12 +64,16 @@ public class StudyModServiceImpl implements StudyModService{
         int wordsInTest = studySetting.getWordsInTest();
         int correctAnswerRequired = studySetting.getCorrectAttemptsRequired();
         for (int i = 0; i < learnedWords.size(); i++) {
-            if (learnedWords.get(i).getCorrectAnswers() == correctAnswerRequired) {
+            if (learnedWords.get(i).getCorrectAnswers() >= correctAnswerRequired) {
                 WordDto deleteWordDto = WordConverter.convertFromStudyWordDto(learnedWords.get(i));
                 wordsDto.remove(deleteWordDto);
-
                 }
             }
+
+        //Возвращаем если словарь уже выучен
+        if (wordsDto.size() == 0) {
+            return new ResponseEntity<>("The dictionary is already learned", HttpStatus.BAD_REQUEST);
+        }
 
             //Создаем список слов
             List<WordDto> testWordDtos = new ArrayList<>();
@@ -107,7 +96,6 @@ public class StudyModServiceImpl implements StudyModService{
                 return new ResponseEntity<>(testDto, HttpStatus.OK);
             }
         }
-    }
 
 
     //TODO
