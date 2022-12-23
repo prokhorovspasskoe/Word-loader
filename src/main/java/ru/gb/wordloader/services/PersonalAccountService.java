@@ -14,7 +14,7 @@ public interface PersonalAccountService {
     void deleteVocabularyById(long id);
 
     //Методы работы со словами
-    void addWord(WordDto wordDto);
+    void addWord(WordDto wordDto, long vocabularyId);
     Word findWordById(Long id);
     void updateWord(WordDto wordDto);
     ResponseEntity<?> deleteWordById(long id);

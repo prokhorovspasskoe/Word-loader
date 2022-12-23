@@ -34,8 +34,6 @@ public class UserController {
         return userService.getUserAllInfo(user_name);
     }
 
-    // TODO
-    //   По информации Александра метод не работает, проверить, при необходимости исправить
     @GetMapping("/get/current-user")
     @Schema(description = "Получение информации о пользователе по username в http-заголовке")
     public UserDto getUserAllInfo(HttpServletRequest request){

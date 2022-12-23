@@ -37,9 +37,9 @@ public class WordController {
     @PostMapping("/add")
     @Schema(description = "Добавить новое слово")
     @Transactional
-    public void addWord(@RequestBody WordDto wordDto){
+    public void addWord(@RequestBody WordDto wordDto, long vocabularyId){
         if(wordDto != null){
-            personalAccountService.addWord(wordDto);
+            personalAccountService.addWord(wordDto, vocabularyId);
         }
     }
 
