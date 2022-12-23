@@ -16,13 +16,9 @@ import ru.gb.wordloader.security.jwt.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     private JwtTokenProvider jwtTokenProvider;
-
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
     private static final String SIGNUP_ENDPOINT = "/api/v1/registration/signup";
-    private static final String FULL_ACCESS = "/api/v1/**";
-
     private static final String SWAGGER_UI = "/swagger-ui/**";
-
     private static final String SWAGGER_DOC = "/v3/api-docs/**";
 
     @Autowired
@@ -44,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(SIGNUP_ENDPOINT, LOGIN_ENDPOINT, FULL_ACCESS, SWAGGER_UI, SWAGGER_DOC).permitAll()
+                .antMatchers(SIGNUP_ENDPOINT, LOGIN_ENDPOINT, SWAGGER_UI, SWAGGER_DOC).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
