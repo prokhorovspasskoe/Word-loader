@@ -43,15 +43,18 @@ public class StudyModServiceImpl implements StudyModService{
     @Override
     public ResponseEntity<?> getTest(Long studyPlanId) {
         //Получаем user'a и vocabulary и находим настройки режима изучения
+        StudyPlan studyPlan;
+        if (studyPlanService.findById(studyPlanId).isPresent()) {
+            studyPlan = studyPlanService.findById(studyPlanId).get();
+        } else {
+            return new ResponseEntity<>("Study plan not found", HttpStatus.BAD_REQUEST);
+        }
 
-        // TODO
-        //  Никак не отлавливается, если будет передан несуществующий studyPlanId
-        StudyPlan studyPlan = studyPlanService.findById(studyPlanId).get();
-
-        // TODO
-        //   Имеет смысл удостовериться, что это именно авторизованный пользователь,
-        //   иначе можно передать в метод studyPlanId другого пользователя и он успешно вернёт чужой тест :)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = studyPlan.getUser();
+        if (!user.equals(userService.findByName(auth.getName()))) {
+            return new ResponseEntity<>("Wrong user", HttpStatus.BAD_REQUEST);
+        }
 
         Vocabulary vocabulary = studyPlan.getVocabulary();
         StudySetting studySetting = studySettingService.findByUserAndVocabulary(user, vocabulary);
