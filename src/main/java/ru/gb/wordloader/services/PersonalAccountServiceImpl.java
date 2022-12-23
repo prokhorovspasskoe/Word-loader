@@ -73,8 +73,13 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public void addWord(WordDto wordDto) {
+    public void addWord(WordDto wordDto, long vocabularyId) {
         Word word = WordConverter.convertFromDto(wordDto);
+        Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId).get();
+        List<Word> wordDtoList = vocabulary.getWords();
+        wordDtoList.add(word);
+        vocabulary.setWords(wordDtoList);
+        vocabularyRepository.save(vocabulary);
         wordRepository.save(word);
     }
 

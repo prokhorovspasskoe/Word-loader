@@ -29,7 +29,6 @@ public class StudyModController {
         return studyModService.getTest(studyPlanId);
     }
 
-
     @PostMapping("/wordCheck")
     @Schema(description = "Проверка введённого пользователем ответа.")
     @Transactional
