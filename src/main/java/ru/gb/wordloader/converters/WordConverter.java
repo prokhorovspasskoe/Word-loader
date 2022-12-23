@@ -1,5 +1,6 @@
 package ru.gb.wordloader.converters;
 
+import ru.gb.wordloader.dto.StudyWordDto;
 import ru.gb.wordloader.dto.VocabularyDto;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.entities.Vocabulary;
@@ -33,6 +34,14 @@ public class WordConverter {
 
     public static List<Word> convertFromDtoList(List<WordDto> wordDtos) {
         return wordDtos.stream().map(p -> convertFromDto(p)).collect(Collectors.toList());
+    }
+
+    public static WordDto convertFromStudyWordDto(StudyWordDto studyWordDto) {
+        return WordDto.builder()
+                .id(studyWordDto.getId())
+                .original(studyWordDto.getOriginal())
+                .translated(studyWordDto.getTranslated())
+                .build();
     }
 
 }

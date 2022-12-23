@@ -18,4 +18,6 @@ public interface UserService {
     UserDto getUserAllInfo(long user_id);
 
     UserDto getUserAllInfo(String username);
+
+    User getAuthenticatedUser();
 }

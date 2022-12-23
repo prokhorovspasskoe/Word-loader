@@ -26,14 +26,19 @@ public class RegistrationController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDto registerDto) {
         String username = registerDto.getUsername();
-        User user = userService.findByName(username);
-        if (user != null) {
-            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
-        }
-        if ( userService.register(registerDto) ) {
-            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Password and it's confirmation mismatch", HttpStatus.BAD_REQUEST);
+        String password  = registerDto.getPassword();
+        if(username != null && password != null){
+            User user = userService.findByName(username);
+            if (user != null) {
+                return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+            }
+            if ( userService.register(registerDto) ) {
+                return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Password and it's confirmation mismatch", HttpStatus.BAD_REQUEST);
+            }
+        }else{
+            return new ResponseEntity<>("Empty username or password", HttpStatus.BAD_REQUEST);
         }
     }
 }

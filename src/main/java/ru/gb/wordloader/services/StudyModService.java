@@ -1,10 +1,15 @@
 package ru.gb.wordloader.services;
 
-import ru.gb.wordloader.dto.WordDto;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import ru.gb.wordloader.dto.TestDto;
+import ru.gb.wordloader.dto.UserWordDto;
 
 public interface StudyModService {
-    List<WordDto> initialize(String theme, int minBreakPeriod, int correctAttemptsRequired, int wordsInTest);
+
+    ResponseEntity<?> getTest(Long studyPlanId);
+
+    String wordCheck(UserWordDto userWordDto);
+
+    ResponseEntity<?> takeVocabularyToStudy(Long vocabularyId);
 
 }

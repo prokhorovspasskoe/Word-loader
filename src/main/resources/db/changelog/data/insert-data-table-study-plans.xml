@@ -7,18 +7,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
     http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
 
-    <changeSet id="before_insert_data_table.STUDY_SETTINGS" author="ugryumov.alexey" context="postgresql" labels="insert_data_study_settings_table">
-        <tagDatabase tag="before_insert_data_study_settings_table"/>
+    <changeSet id="before_insert_data_table.STUDY_PLANS" author="ugryumov.alexey" context="postgresql" labels="insert_data_study_plans_table">
+        <tagDatabase tag="before_insert_data_study_plans"/>
     </changeSet>
 
-    <changeSet id="insert_data_table.STUDY_SETTINGS" author="ugryumov.alexey" context="postgresql" labels="insert_data_study_settings_table">
+    <changeSet id="insert_data_table.STUDY_PLANS" author="ugryumov.alexey" context="postgresql" labels="insert_data_study_plans_table">
 
-        <insert tableName="STUDY_SETTINGS">
+        <insert tableName="STUDY_PLANS">
             <column name="USER_ID" value="1"></column>
             <column name="VOCABULARY_ID" value="1"></column>
-            <column name="MIN_BREAK_PERIOD" value="15"></column>
-            <column name="CORRECT_ATTEMPTS_REQUIRED" value="10"></column>
-            <column name="WORDS_IN_TEST" value="10"></column>
+            <column name="LAST_PROGRESS" value="now()"></column>
         </insert>
 
     </changeSet>

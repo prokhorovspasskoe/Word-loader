@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd ">
+
+    <changeSet id="before_create_unique_constraint.STUDY_SETTINGS" author="ugryumov.alexey" context="postgresql" labels="study_settings">
+        <tagDatabase tag="before_create_unique_constraint_study_settings"/>
+    </changeSet>
+
+    <changeSet id="create_unique_constraint.STUDY_SETTINGS" author="ugryumov.alexey" context="postgresql" labels="study_settings">
+
+        <addUniqueConstraint
+                columnNames="user_id, vocabulary_id"
+                constraintName="study_settings_unique_constraint"
+                tableName="study_settings"
+        />
+    </changeSet>
+
+</databaseChangeLog>
