@@ -76,9 +76,7 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     public void addWord(WordDto wordDto, long vocabularyId) {
         Word word = WordConverter.convertFromDto(wordDto);
         Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId).get();
-        List<Word> wordDtoList = vocabulary.getWords();
-        wordDtoList.add(word);
-        vocabulary.setWords(wordDtoList);
+        vocabulary.getWords().add(word);
         vocabularyRepository.save(vocabulary);
         wordRepository.save(word);
     }
