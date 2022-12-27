@@ -74,11 +74,19 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
 
     @Override
     public void addWord(WordDto wordDto, long vocabularyId) {
+        // TODO
+        //   Я думаю, в этом месте нужно изменить логику. У нас на фронте пользователем будет введено слово и его перевод.
+        //   И всё это будет на форме определённого словаря. То есть нам придёт wordDto скорее всего не существующего в нашей БД слова
+        //   и без ID. Тут нужно по wordDto.original попробовать найти слово в БД (в БД ограничение на уникальность по original).
+        //   Если есть, то вернуть его и прописать в словарь. А если нет, то сохранить и тоже вернуть.
+        //   И после всего этого уже сохранить в словарь.
         Word word = WordConverter.convertFromDto(wordDto);
+        //   ---------------------------------------------------
+
         Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId).get();
         vocabulary.getWords().add(word);
         vocabularyRepository.save(vocabulary);
-        wordRepository.save(word);
+        wordRepository.save(word); // TODO А это зачем?
     }
 
     @Override
