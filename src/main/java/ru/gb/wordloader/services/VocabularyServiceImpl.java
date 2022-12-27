@@ -28,8 +28,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public List<VocabularyDto> findAllPublicVocabularies() {
-        List <Vocabulary> vocabularyList = vocabularyRepository.getAllByIsPrivateFalse();
-        return VocabularyConverter.convertToDtoList(vocabularyList);
+        return VocabularyConverter.convertToDtoList(vocabularyRepository.getAllByIsPrivateFalse());
     }
 
 }
