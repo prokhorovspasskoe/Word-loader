@@ -67,9 +67,10 @@ public class VocabularyController {
     @GetMapping("/get/public")
     @Schema(description = "Получение публичных словарей.")
     public ResponseEntity<?> getAllPublicVocabularies() {
-       List<VocabularyDto> vocabularyDtoList = vocabularyService.findAllPublicVocabularies();
-       if (vocabularyDtoList.size() != 0) {
-           return new ResponseEntity<>(vocabularyDtoList, HttpStatus.OK);
+       List<VocabularyDto> vocabularies = vocabularyService.findAllPublicVocabularies();
+       if (vocabularies.size() != 0) {
+           return new ResponseEntity<>(vocabularies, HttpStatus.OK);
+
        } else {
            return new ResponseEntity<>("Public vocabularies not found", HttpStatus.NOT_FOUND);
        }
