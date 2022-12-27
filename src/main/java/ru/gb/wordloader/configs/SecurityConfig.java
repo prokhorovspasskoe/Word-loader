@@ -16,8 +16,8 @@ import ru.gb.wordloader.security.jwt.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     private JwtTokenProvider jwtTokenProvider;
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String SIGNUP_ENDPOINT = "/api/v1/registration/signup";
+    private static final String LOGIN_ENDPOINT = "/api/v1/login";
+    private static final String SIGNUP_ENDPOINT = "/api/v1/register";
     private static final String SWAGGER_UI = "/swagger-ui/**";
     private static final String SWAGGER_DOC = "/v3/api-docs/**";
 

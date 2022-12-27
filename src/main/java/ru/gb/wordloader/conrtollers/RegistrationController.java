@@ -12,7 +12,7 @@ import ru.gb.wordloader.entities.User;
 import ru.gb.wordloader.services.UserService;
 
 @RestController
-@RequestMapping(value = "/api/v1/registration")
+@RequestMapping(value = "/api/v1")
 public class RegistrationController {
 
     private final UserService userService;
@@ -23,7 +23,7 @@ public class RegistrationController {
     }
 
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDto registerDto) {
         String username = registerDto.getUsername();
         String password  = registerDto.getPassword();

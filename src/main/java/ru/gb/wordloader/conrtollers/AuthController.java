@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/v1/auth/")
+@RequestMapping(value = "/api/v1")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
