@@ -50,11 +50,7 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     public VocabularyDto updateVocabulary(VocabularyDto vocabularyDto) {
         Vocabulary vocabulary = VocabularyConverter.convertFromDto(vocabularyDto);
 
-        // TODO
-        //   Добавить проверку, что публичный словарь нельзя изменять, если он взят
-        //   кем-нибудь на изучение
-        //Проверяем, что текущий авторизованный пользователь является автором словаря
-        if (vocabulary.getUser().equals(userService.getAuthenticatedUser())) {
+        if (vocabulary.getUser().equals(userService.getAuthenticatedUser()) && vocabulary.isPrivate()) {
             vocabulary = vocabularyRepository.save(vocabulary);
             return VocabularyConverter.convertToDto(vocabulary);
         } else {
@@ -62,31 +58,25 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
         }
     }
 
-    // TODO
-    //   Добавить проверку, что словарь не взят никем на изучение,
-    //   иначе удалять нельзя
     @Override
     public void deleteVocabularyById(long id) {
-        if(vocabularyRepository.findById(id).isPresent()){
+
+        if(vocabularyRepository.findById(id).isPresent() &&
+                vocabularyRepository.findById(id).get().isPrivate()){
             vocabularyRepository.deleteById(id);
         }
     }
 
     @Override
-    public void addWord(WordDto wordDto, long vocabularyId) {
-        // TODO
-        //   Я думаю, в этом месте нужно изменить логику. У нас на фронте пользователем будет введено слово и его перевод.
-        //   И всё это будет на форме определённого словаря. То есть нам придёт wordDto скорее всего не существующего в нашей БД слова
-        //   и без ID. Тут нужно по wordDto.original попробовать найти слово в БД (в БД ограничение на уникальность по original).
-        //   Если есть, то вернуть его и прописать в словарь. А если нет, то сохранить и тоже вернуть.
-        //   И после всего этого уже сохранить в словарь.
-        Word word = WordConverter.convertFromDto(wordDto);
-        //   ---------------------------------------------------
+    public WordDto addWord(WordDto wordDto, long vocabularyId) {
 
+        Word word = wordRepository.findByOriginal(wordDto.getOriginal());
         Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId).get();
         vocabulary.getWords().add(word);
+        wordRepository.save(word);
         vocabularyRepository.save(vocabulary);
-        wordRepository.save(word); // TODO А это зачем?
+
+        return wordDto;
     }
 
     @Override
@@ -102,9 +92,12 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public ResponseEntity<?> deleteWordById(long id) {
-        if(wordRepository.findById(id).isPresent()){
+    public ResponseEntity<?> deleteWordById(long id, long vocabularyId) {
+        if(wordRepository.findById(id).isPresent() &&
+                vocabularyRepository.findById(vocabularyId).get().isPrivate()){
+            Word word = wordRepository.findById(id).get();
             wordRepository.deleteById(id);
+            vocabularyRepository.getReferenceById(vocabularyId).getWords().remove(word);
             return new ResponseEntity<>("The world delete.", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("The word being deleted does not exist", HttpStatus.BAD_REQUEST);

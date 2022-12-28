@@ -34,26 +34,20 @@ public class WordController {
         }
     }
 
-    //TODO
-    //  Когда в WordController видишь метод addWord на эндпойнте "/add",
-    //  то воспринимаешь его как добавление слова. А по факту тут добавление слова
-    //  в СЛОВАРЬ. Это несколько иная операция. Я бы подумал, как это отразить в наименовании
-    //  метода и эндпойнта.
-    //
     @PostMapping("/add")
     @Schema(description = "Добавить новое слово в словарь")
     @Transactional
-    public void addWord(@RequestBody WordDto wordDto, long vocabularyId){
+    public void addWordToVocabulary(@RequestBody WordDto wordDto, long vocabularyId){
         if(wordDto != null){
             personalAccountService.addWord(wordDto, vocabularyId);
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}/{vocabularyId}")
     @Schema(description = "Удалить слово по id.")
     @Transactional
-    public void deleteWordById(@PathVariable long id){
-        personalAccountService.deleteWordById(id);
+    public void deleteWordById(@PathVariable long id, long vocabularyId){
+        personalAccountService.deleteWordById(id, vocabularyId);
     }
 
     @PutMapping("/put/{id}")
