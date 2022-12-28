@@ -34,22 +34,6 @@ public class WordController {
         }
     }
 
-    @PostMapping("/add")
-    @Schema(description = "Добавить новое слово в словарь")
-    @Transactional
-    public void addWordToVocabulary(@RequestBody WordDto wordDto, long vocabularyId){
-        if(wordDto != null){
-            personalAccountService.addWord(wordDto, vocabularyId);
-        }
-    }
-
-    @DeleteMapping("/delete/{id}/{vocabularyId}")
-    @Schema(description = "Удалить слово по id.")
-    @Transactional
-    public void deleteWordById(@PathVariable long id, long vocabularyId){
-        personalAccountService.deleteWordById(id, vocabularyId);
-    }
-
     @PutMapping("/put/{id}")
     @Schema(description = "Изменить слово по id.")
     @Transactional

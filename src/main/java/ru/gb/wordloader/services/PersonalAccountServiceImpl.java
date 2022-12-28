@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.converters.WordConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
+import ru.gb.wordloader.dto.VocabularyWordDto;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.entities.Word;
@@ -68,16 +69,35 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public WordDto addWord(WordDto wordDto, long vocabularyId) {
+    public ResponseEntity<?> addVocabularyWord(VocabularyWordDto vocabularyWordDto) {
 
-        Word word = wordRepository.findByOriginal(wordDto.getOriginal());
-        Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId).get();
-        vocabulary.getWords().add(word);
-        wordRepository.save(word);
-        vocabularyRepository.save(vocabulary);
+        Optional<Word> wordSearched = wordRepository.findByOriginal(vocabularyWordDto.getOriginal());
+        Word word;
+        if (!wordSearched.isPresent()) { //Слова в БД нет, создаём и сохраняем
+            word = Word.builder()
+                    .original(vocabularyWordDto.getOriginal())
+                    .translated(vocabularyWordDto.getTranslated())
+                    .build();
+            wordRepository.save(word);
+        } else {
+            word = wordSearched.get();
+        }
 
-        return wordDto;
+        Vocabulary vocabulary = vocabularyRepository.findById(vocabularyWordDto.getVocabularyId()).get();
+        if (vocabulary.getUser().equals(userService.getAuthenticatedUser())) { //Проверим, что словарь пользователя и он может туда добавлять
+            if (!vocabulary.getWords().contains(word)) { //Проверим, что слова в словаре ещё нет
+                vocabulary.getWords().add(word);
+                vocabularyRepository.save(vocabulary);
+                return new ResponseEntity<>("The word has been added to vocabulary successfully.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("The word has been added to vocabulary already.", HttpStatus.BAD_REQUEST);
+            }
+
+        } else {
+            return new ResponseEntity<>("You are not allowed to add words to another user vocabulary", HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     @Override
     public Word findWordById(Long id) {
@@ -92,13 +112,13 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public ResponseEntity<?> deleteWordById(long id, long vocabularyId) {
+    public ResponseEntity<?> deleteVocabularyWord(long id, long vocabularyId) {
         if(wordRepository.findById(id).isPresent() &&
                 vocabularyRepository.findById(vocabularyId).get().isPrivate()){
             Word word = wordRepository.findById(id).get();
             wordRepository.deleteById(id);
             vocabularyRepository.getReferenceById(vocabularyId).getWords().remove(word);
-            return new ResponseEntity<>("The world delete.", HttpStatus.OK);
+            return new ResponseEntity<>("The word delete.", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("The word being deleted does not exist", HttpStatus.BAD_REQUEST);
         }
