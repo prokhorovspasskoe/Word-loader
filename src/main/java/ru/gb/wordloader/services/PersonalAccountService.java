@@ -17,5 +17,5 @@ public interface PersonalAccountService {
     WordDto addWord(WordDto wordDto, long vocabularyId);
     Word findWordById(Long id);
     void updateWord(WordDto wordDto);
-    ResponseEntity<?> deleteWordById(long id);
+    ResponseEntity<?> deleteWordById(long id, long vocabularyId);
 }

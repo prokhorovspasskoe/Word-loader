@@ -98,9 +98,12 @@ public class PersonalAccountServiceImpl implements PersonalAccountService{
     }
 
     @Override
-    public ResponseEntity<?> deleteWordById(long id) {
-        if(wordRepository.findById(id).isPresent()){
+    public ResponseEntity<?> deleteWordById(long id, long vocabularyId) {
+        if(wordRepository.findById(id).isPresent() &&
+                vocabularyRepository.findById(vocabularyId).get().isPrivate()){
+            Word word = wordRepository.findById(id).get();
             wordRepository.deleteById(id);
+            vocabularyRepository.getReferenceById(vocabularyId).getWords().remove(word);
             return new ResponseEntity<>("The world delete.", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("The word being deleted does not exist", HttpStatus.BAD_REQUEST);

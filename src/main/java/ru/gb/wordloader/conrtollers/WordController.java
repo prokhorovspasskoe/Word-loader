@@ -43,11 +43,11 @@ public class WordController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}/{vocabularyId}")
     @Schema(description = "Удалить слово по id.")
     @Transactional
-    public void deleteWordById(@PathVariable long id){
-        personalAccountService.deleteWordById(id);
+    public void deleteWordById(@PathVariable long id, long vocabularyId){
+        personalAccountService.deleteWordById(id, vocabularyId);
     }
 
     @PutMapping("/put/{id}")
