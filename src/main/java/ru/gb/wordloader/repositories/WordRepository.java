@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.gb.wordloader.entities.Word;
 
+import java.util.Optional;
+
 @Repository
 public interface WordRepository extends JpaRepository<Word, Long> {
-    @Query(value = "select * from words where original = ?1", nativeQuery = true)
-    Word findByOriginal(String original);
+    Optional<Word> findByOriginal(String original);
 }

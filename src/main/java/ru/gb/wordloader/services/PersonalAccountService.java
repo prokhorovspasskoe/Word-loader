@@ -2,6 +2,7 @@ package ru.gb.wordloader.services;
 
 import org.springframework.http.ResponseEntity;
 import ru.gb.wordloader.dto.VocabularyDto;
+import ru.gb.wordloader.dto.VocabularyWordDto;
 import ru.gb.wordloader.dto.WordDto;
 import ru.gb.wordloader.entities.Vocabulary;
 import ru.gb.wordloader.entities.Word;
@@ -14,8 +15,9 @@ public interface PersonalAccountService {
     void deleteVocabularyById(long id);
 
     //Методы работы со словами
-    WordDto addWord(WordDto wordDto, long vocabularyId);
     Word findWordById(Long id);
     void updateWord(WordDto wordDto);
-    ResponseEntity<?> deleteWordById(long id, long vocabularyId);
+
+    ResponseEntity<?> addVocabularyWord(VocabularyWordDto wordDto);
+    ResponseEntity<?> deleteVocabularyWord(long id, long vocabularyId);
 }

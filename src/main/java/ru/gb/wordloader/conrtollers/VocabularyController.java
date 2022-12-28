@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.wordloader.converters.VocabularyConverter;
 import ru.gb.wordloader.dto.VocabularyDto;
+import ru.gb.wordloader.dto.VocabularyWordDto;
 import ru.gb.wordloader.services.PersonalAccountService;
 import ru.gb.wordloader.services.VocabularyService;
 import ru.gb.wordloader.services.exceptions.NotFoundException;
@@ -58,22 +59,38 @@ public class VocabularyController {
         personalAccountService.deleteVocabularyById(id);
     }
 
+    @GetMapping("/get/public")
+    @Schema(description = "Получение публичных словарей.")
+    public ResponseEntity<?> getAllPublicVocabularies() {
+        List<VocabularyDto> vocabularies = vocabularyService.findAllPublicVocabularies();
+        if (vocabularies.size() != 0) {
+            return new ResponseEntity<>(vocabularies, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>("Public vocabularies not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/addWord")
+    @Schema(description = "Добавить новое слово в словарь.")
+    @Transactional
+    public ResponseEntity<?> addVocabularyWord(@RequestBody VocabularyWordDto vocabularyWordDto){
+        return personalAccountService.addVocabularyWord(vocabularyWordDto);
+    }
+
+    @DeleteMapping("/deleteWord/{wordId}/{vocabularyId}")
+    @Schema(description = "Удалить слово из словаря.")
+    @Transactional
+    public ResponseEntity<?> deleteVocabularyWord(@PathVariable long wordId, @PathVariable long vocabularyId){
+        return personalAccountService.deleteVocabularyWord(wordId, vocabularyId);
+    }
+
     @ExceptionHandler
     public ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
 
         return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/get/public")
-    @Schema(description = "Получение публичных словарей.")
-    public ResponseEntity<?> getAllPublicVocabularies() {
-       List<VocabularyDto> vocabularies = vocabularyService.findAllPublicVocabularies();
-       if (vocabularies.size() != 0) {
-           return new ResponseEntity<>(vocabularies, HttpStatus.OK);
 
-       } else {
-           return new ResponseEntity<>("Public vocabularies not found", HttpStatus.NOT_FOUND);
-       }
-    }
 
 }
